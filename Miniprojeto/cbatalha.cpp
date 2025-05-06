@@ -5,7 +5,7 @@
 #include <cstring>
 #include <string>
 //#include "cbatalha.h"
-
+aaaa
 using namespace std;
 
 const unsigned int MAX_NAME_LENGTH = 10;
