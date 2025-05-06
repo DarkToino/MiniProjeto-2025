@@ -5,7 +5,6 @@
 #include <cstring>
 #include <string>
 //#include "cbatalha.h"
-aaaa
 using namespace std;
 
 const unsigned int MAX_NAME_LENGTH = 10;
@@ -249,7 +248,7 @@ void CBatalha:: game(){
 	Player player1;
 	Player player2;
 	
-	//a char axis;
+	//char axis;
 	
 	system ("cls");
 		
