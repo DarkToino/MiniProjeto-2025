@@ -249,7 +249,7 @@ void CBatalha:: game(){
 	Player player1;
 	Player player2;
 	
-	//char axis;
+	//a char axis;
 	
 	system ("cls");
 		
