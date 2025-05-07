@@ -138,7 +138,7 @@ void CBatalha:: showTab(int a){
 		//imprime a primeira parte da tabela
 		cout << " ^" << endl;
 		cout << left << setw(left_width) << "Z|____________________" 
-			 << setw(center_ - left_width) << " | "
+			// << setw(center_ - left_width) << " | "
 			 << right << setw(right_pos - center_pos - 1) << "Z|____________________" << endl; 
 		for (int i = 9; i >= 0; i--){
 			cout << i << "|";
@@ -147,8 +147,8 @@ void CBatalha:: showTab(int a){
 			}
 			cout << endl;
 		}
-		cout << setw(center_ - left_width) << " | "
-			 << right << setw(right_pos - center_pos - 1) << tab2[j][0][i] << "|";
+		//cout << setw(center_ - left_width) << " | "
+			// << right << setw(right_pos - center_pos - 1) << tab2[j][0][i] << "|";
 			 
 		cout << " +---------------------->" << endl;
 		cout << " |0|1|2|3|4|5|6|7|8|9|  X" << endl;
