@@ -18,6 +18,7 @@ class CBatalha{
 	private:
 		char tab1[10][10][10];
 		char tab2[10][10][10];
+		char tab[10][10][10];
 		
 		//cores para as diferentes naves (https://dev.to/tenry/terminal-colors-in-c-c-3dgc)
 		//A -> Caças, B -> Fragatas, C -> Contratorpedeiros, D -> Cruzador, E -> Nave-mãe
@@ -44,7 +45,7 @@ class CBatalha{
 		void menu();
 		void game();
 		void showTab(int);
-		void axisSelect(char);
+		void axisSelect(char, int);
 		void writeInTab(int);
 	
 };
@@ -56,6 +57,7 @@ CBatalha::CBatalha(){
 			for (int k = 0; k < 10; k++){
 				tab1[i][j][k] = ' ';
 				tab2[i][j][k] = ' ';
+				tab[i][j][k] = ' ';
 			}
 		}
 	}
@@ -169,7 +171,8 @@ void CBatalha:: showTab(int a){
 	}	
 }
 
-void CBatalha:: axisSelect(char axis){
+void CBatalha:: axisSelect(char axis, int player){
+	int firstDigit, secondDigit, temp;
 	//Caso o player selecione X, mostrar o eixo (Y-Z)
 	if (axis == 'X' || axis == 'x'){
 		cout << " ^" << endl;
@@ -177,13 +180,26 @@ void CBatalha:: axisSelect(char axis){
 		for (int i = 9; i >= 0; i--){
 			cout << i << "|";
 			for (int j = 0; j < 10; j++){
-				cout << tab1[0][i][j] << "|";
+				cout << tab[0][i][j] << "|";
 			}
 		cout << endl;
 		}
 		cout << " +---------------------->" << endl;
 		cout << " |0|1|2|3|4|5|6|7|8|9|  Z" << endl;
 		cout << endl;
+		cout << "Em seguida escolhe uma coordenada para atacar (ex.00)" << endl;
+
+		cin >> temp;
+		firstDigit = temp / 10;
+		secondDigit = temp % 10;
+		
+		for (int i = 0; i < 10; i++){
+			if (tab1[i][firstDigit][secondDigit] == '+')
+				tab1[i][firstDigit][secondDigit] = 'X';
+			else
+				tab1[i][firstDigit][secondDigit] = 'o';
+		}
+		showTab(1);
 	}
 	//Caso o player selecione Y, mostrar o eixo (X-Z)
 	else if (axis == 'Y' || axis == 'y'){
@@ -192,13 +208,26 @@ void CBatalha:: axisSelect(char axis){
 		for (int i = 9; i >= 0; i--){
 			cout << i << "|";
 			for (int j = 0; j < 10; j++){
-				cout << tab1[i][0][j] << "|";
+				cout << tab[i][0][j] << "|";
 			}
 		cout << endl;
 		}
 		cout << " +---------------------->" << endl;
 		cout << " |0|1|2|3|4|5|6|7|8|9|  Z" << endl;
 		cout << endl;
+		cout << "Em seguida escolhe uma coordenada para atacar (ex.00)" << endl;
+
+		cin >> temp;
+		firstDigit = temp / 10;
+		secondDigit = temp % 10;
+
+		for (int i = 0; i < 10; i++){
+			if (tab1[firstDigit][secondDigit][i] == '+')
+				tab1[firstDigit][secondDigit][i] = 'X';
+			else
+				tab1[firstDigit][secondDigit][i] = 'o';
+		}
+		showTab(1);
 	}		
 	//Caso o player selecione Z, mostrar o eixo (X-Y)
 	else if (axis == 'Z' || axis == 'z'){
@@ -207,15 +236,29 @@ void CBatalha:: axisSelect(char axis){
 		for (int i = 9; i >= 0; i--){
 			cout << i << "|";
 			for (int j = 0; j < 10; j++){
-				cout << tab1[i][j][0] << "|";
+				cout << tab[i][j][0] << "|";
 			}
 		cout << endl;
 		}
 		cout << " +---------------------->" << endl;
 		cout << " |0|1|2|3|4|5|6|7|8|9|  Y" << endl;
 		cout << endl;
+		cout << "Em seguida escolhe uma coordenada para atacar (ex.00)" << endl;
+
+		cin >> temp;
+		firstDigit = temp / 10;
+		secondDigit = temp % 10;
+
+		for (int i = 0; i < 10; i++){
+			if (tab1[firstDigit][secondDigit][i] == '+')
+				tab1[firstDigit][secondDigit][i] = 'X';
+			else
+				tab1[firstDigit][secondDigit][i] = 'o';
+		}
+		showTab(1);
 	}else{
 		cout << "Tem de inserir um eixo correto! (X, Y ou Z)" << endl;
+		return;
 	}
 }
 
@@ -231,15 +274,15 @@ void CBatalha:: writeInTab(int type){
 	
 	switch(type){
 		case 1:
-			tab1[firstDigit][secondDigit][thirdDigit] = 'X';
+			tab1[firstDigit][secondDigit][thirdDigit] = '+';
 		case 2:
-			tab1[firstDigit][secondDigit][thirdDigit] = 'X';
+			tab1[firstDigit][secondDigit][thirdDigit] = '+';
 		case 3:
-			tab1[firstDigit][secondDigit][thirdDigit] = 'X';
+			tab1[firstDigit][secondDigit][thirdDigit] = '+';
 		case 4:
-			tab1[firstDigit][secondDigit][thirdDigit] = 'X';
+			tab1[firstDigit][secondDigit][thirdDigit] = '+';
 		case 5:
-			tab1[firstDigit][secondDigit][thirdDigit] = 'X';
+			tab1[firstDigit][secondDigit][thirdDigit] = '+';
 	}
 }
 	
@@ -248,7 +291,7 @@ void CBatalha:: game(){
 	Player player1;
 	Player player2;
 	
-	//char axis;
+	char axis;
 	
 	system ("cls");
 		
@@ -321,6 +364,11 @@ cout<<"Nick:";
 		showTab(2);
 		writeInTab(5);	
 		system ("cls");
+
+	cout << player1.name << " es o primeiro a jogar! Comeca por escolher um eixo para lancar o disparo" << endl;
+	cin >> axis;
+
+	axisSelect(axis, 1);
 }
 	
 void CBatalha:: menu(){ 
