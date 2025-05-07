@@ -252,11 +252,13 @@ void CBatalha:: game(){
 	
 	system ("cls");
 		
-	cout << "========================================" << endl;
-	cout << endl;
-	cout << "   Insira o nome do primeiro jogador    " << endl;
-	cout << endl;
-	cout << "========================================" << endl;
+cout << "========================================" << endl;
+cout << "|                                      |" << endl;
+cout << "|   Insira o nome do primeiro jogador  |" << endl;
+cout << "|                                      |" << endl;
+cout << "========================================" << endl;
+cout<<"Nick:";
+
 	cin >> player1.name;
 	
 	system ("cls");
@@ -285,11 +287,13 @@ void CBatalha:: game(){
 		writeInTab(5);	
 		system ("cls");
 					
-	cout << "========================================" << endl;
-	cout << endl;
-	cout << "    Insira o nome do segundo jogador    " << endl;
-	cout << endl;
-	cout << "========================================" << endl;
+cout << "========================================" << endl;
+cout << "|                                      |" << endl;
+cout << "|   Insira o nome do segundo jogador   |" << endl;
+cout << "|                                      |" << endl;
+cout << "========================================" << endl;
+cout<<"Nick:";
+
 	cin >> player2.name;
 		
 	system ("cls");
@@ -325,17 +329,18 @@ void CBatalha:: menu(){
 	do{
 		system("cls");
 		
-		cout << "========================================" << endl;
-        cout << "                  MENU                  " << endl;
-        cout << endl;
-        cout << "1. Novo jogo" << endl;
-        cout << "2. Configuracao" << endl;
-        cout << "3. Historico" << endl;
-        cout << "4. Como jogar" << endl;
-        cout << endl;
-        cout << "0. Sair" << endl;
-        cout << endl;
-        cout << "========================================" << endl;
+		cout << "==========================================" << endl;
+		cout << "|             MENU PRINCIPAL             |" << endl;
+		cout << "==========================================" << endl;
+		cout << "| 1. Iniciar Novo Jogo                   |" << endl;
+		cout << "| 2. Configuracoes                       |" << endl;
+		cout << "| 3. Historico                           |" << endl;
+		cout << "| 4. Como Jogar                          |" << endl;
+		cout << "|                                        |" << endl;
+		cout << "|                                        |" << endl;
+		cout << "| 0. Sair                                |" << endl;
+		cout << "==========================================" << endl;
+		cout<<"Selecione a opcao:";
 
         cin >> optionM;        
 			
@@ -348,14 +353,15 @@ void CBatalha:: menu(){
 					system("cls");
 					
 					cout << "========================================" << endl;
-					cout << "                NOVO JOGO               " << endl;
-					cout << endl;
-					cout << "Comecar novo jogo?" << endl;
-					cout << "1. Sim" << endl;
-					cout << "0. Nao" << endl;
-					cout << endl;
+					cout << "|              NOVO JOGO               |" << endl;
 					cout << "========================================" << endl;
-					
+					cout << "|   Comecar novo jogo?                 |" << endl;
+					cout << "|                                      |" << endl;
+					cout << "|   1. Sim                             |" << endl;
+					cout << "|   0. Nao                             |" << endl;
+					cout << "|                                      |" << endl;
+					cout << "========================================" << endl;
+					cout << "Selecione a opcao:";
 					cin >> option1;
 					
 					if (option1 == 1)
@@ -390,15 +396,18 @@ void CBatalha:: menu(){
 					system("cls");
 					
 					cout << "========================================" << endl;
-					cout << "               COMO JOGAR               " << endl;
-					cout << endl;
-					cout << "Escolher a linguagem de preferencia:" << endl;
-					cout << "1. Portugues" << endl;
-					cout << "2. Ingles" << endl;
-					cout << endl;
-					cout << "0. Sair" << endl;
-					cout << endl;
+					cout << "|              COMO JOGAR              |" << endl;
 					cout << "========================================" << endl;
+					cout << "|  Escolher a linguagem de preferencia:|" << endl;
+					cout << "|                                      |" << endl;
+					cout << "|  1. Portugues                        |" << endl;
+					cout << "|  2. Ingles                           |" << endl;
+					cout << "|                                      |" << endl;
+					cout << "|  0. Sair                             |" << endl;
+					cout << "|                                      |" << endl;
+					cout << "========================================" << endl;
+					cout << "Selecione uma opcao:";
+
 					
 					cin >> option4;
 					
@@ -417,13 +426,16 @@ void CBatalha:: menu(){
 					system("cls");
 					
 					cout << "========================================" << endl;
-					cout << "                  SAIR                  " << endl;
-					cout << endl;
-					cout << "Tem a certeza?" << endl;
-					cout << "1. Sim" << endl;
-					cout << "0. Nao" << endl;
-					cout << endl;
+					cout << "|                SAIR                  |" << endl;
 					cout << "========================================" << endl;
+					cout << "|  Tem certeza?                        |" << endl;
+					cout << "|                                      |" << endl;
+					cout << "|  1. Sim                              |" << endl;
+					cout << "|  0. Nao                              |" << endl;
+					cout << "|                                      |" << endl;
+					cout << "========================================" << endl;
+					cout << "Selecione uma opcao:";
+
 					
 					cin >> option0;
 					
@@ -431,17 +443,20 @@ void CBatalha:: menu(){
 						system("cls");
 						
 						cout << "========================================" << endl;
-						cout << endl;
-						cout << "              A encerrar                " << endl;
-						cout << endl;
+						cout << "|                                      |" << endl;
+						cout << "|             A ENCERRAR...            |" << endl;
+						cout << "|                                      |" << endl;
 						cout << "========================================" << endl;
+
 						sair = true;
 						break;
 					}
 					
 					if (option0 == 0) menu();
+					break;
 					
 				}while(option0 > 1 || option0 < 0);
+				break;
 				
 		system("cls");
 		}	
