@@ -17,7 +17,8 @@ class CBatalha{
 	private:
 		char tab1[10][10][10];
 		char tab2[10][10][10];
-		char tab[10][10][10];
+		char emptyTab1[10][10][10];
+		char emptyTab2[10][10][10];
 		
 		//cores para as diferentes naves (https://dev.to/tenry/terminal-colors-in-c-c-3dgc)
 		//A -> Caças, B -> Fragatas, C -> Contratorpedeiros, D -> Cruzador, E -> Nave-mãe
@@ -31,10 +32,8 @@ class CBatalha{
 		const char* MAGENTA = "\033[35m";
 		const char* RESET = "\033[0m";  //dá reset para a cor default
 
-		const int terminal_width = 80;
-		const int left_width = 30;
-		const int center_pos = terminal_width / 2;
-		const int right_pos = center_pos + 2;
+		const int tableWidth = 25;  
+    	const int spacing = 8;      
 		
 		
 	public:
@@ -56,13 +55,14 @@ CBatalha::CBatalha(){
 			for (int k = 0; k < 10; k++){
 				tab1[i][j][k] = ' ';
 				tab2[i][j][k] = ' ';
-				tab[i][j][k] = ' ';
+				emptyTab1[i][j][k] = ' ';
+				emptyTab2[i][j][k] = ' ';
 			}
 		}
 	}
 	//inicializar as cores nas naves
 	/*
-	for (int i = 3; i >= 0; i++){
+	for (int i = 3; i >= 0; i--){
 		A[i] += RED;
 		if (i < 3){
 			B[i] += GREEN;
@@ -78,96 +78,140 @@ CBatalha::CBatalha(){
 	*/
 }
 
-void CBatalha:: showTab(int a){
-	if (a == 1){
-		//imprime a primeira parte da tabela
-		cout << " ^" << endl;
-		cout << "Z|____________________" << endl;
-		for (int i = 9; i >= 0; i--){
-			cout << i << "|";
-			for (int j = 0; j < 10; j++){
-				cout << tab1[j][0][i] << "|";
-			}
-			cout << endl;
-		}
-		cout << " +---------------------->" << endl;
-		cout << " |0|1|2|3|4|5|6|7|8|9|  X" << endl;
-		cout << endl;
-		//imprime a segunda parte da tabela
-		cout << " ^" << endl;
-		cout << "Y|____________________" << endl;
-		for (int i = 9; i >= 0; i--){
-			cout << i << "|";
-			for (int j = 0; j < 10; j++){
-				cout << tab1[0][j][i] << "|";
-			}
-			cout << endl;
-		}
-		cout << " +---------------------->" << endl;
-		cout << " |0|1|2|3|4|5|6|7|8|9|  X" << endl;
-		cout << endl;
-	}
-	if (a == 2){
-		//imprime a primeira parte da tabela
-		cout << " ^" << endl;
-		cout << "Z|____________________" << endl;
-		for (int i = 9; i >= 0; i--){
-			cout << i << "|";
-			for (int j = 0; j < 10; j++){
-				cout << tab2[j][0][i] << "|";
-			}
-			cout << endl;
-		}
-		cout << " +---------------------->" << endl;
-		cout << " |0|1|2|3|4|5|6|7|8|9|  X" << endl;
-		cout << endl;
-		//imprime a segunda parte da tabela
-		cout << " ^" << endl;
-		cout << "Y|____________________" << endl;
-		for (int i = 9; i >= 0; i--){
-			cout << i << "|";
-			for (int j = 0; j < 10; j++){
-				cout << tab2[0][j][i] << "|";
-			}
-			cout << endl;
-		}
-		cout << " +---------------------->" << endl;
-		cout << " |0|1|2|3|4|5|6|7|8|9|  X" << endl;
-		cout << endl;
-	}
-	if (a == 3){
-		//imprime a primeira parte da tabela
-		cout << " ^" << endl;
-		cout << left << setw(left_width) << "Z|____________________" 
-			// << setw(center_ - left_width) << " | "
-			 << right << setw(right_pos - center_pos - 1) << "Z|____________________" << endl; 
-		for (int i = 9; i >= 0; i--){
-			cout << i << "|";
-			for (int j = 0; j < 10; j++){
-				cout << tab1[j][0][i] << "|";
-			}
-			cout << endl;
-		}
-		//cout << setw(center_ - left_width) << " | "
-			// << right << setw(right_pos - center_pos - 1) << tab2[j][0][i] << "|";
-			 
-		cout << " +---------------------->" << endl;
-		cout << " |0|1|2|3|4|5|6|7|8|9|  X" << endl;
-		cout << endl;
-		//imprime a segunda parte da tabela
-		cout << " ^" << endl;
-		cout << "Y|____________________" << endl;
-		for (int i = 9; i >= 0; i--){
-			cout << i << "|";
-			for (int j = 0; j < 10; j++){
-				cout << tab1[0][j][i] << "|";
-			}
-			cout << endl;
-		}
-		cout << " +---------------------->" << endl;
-		cout << " |0|1|2|3|4|5|6|7|8|9|  X" << endl;
-		cout << endl;
-	}	
+void CBatalha::showTab(int tabIndex) {
+    if (tabIndex == 1 || tabIndex == 2) {
+        // Imprime a primeira parte da tabela (X-Z)
+        cout << " ^" << endl;
+        cout << "Z|____________________" << endl;
+        for (int i = 9; i >= 0; i--) {
+            cout << i << "|";
+            for (int j = 0; j < 10; j++) {
+                if(tabIndex == 1)
+                    cout << tab1[j][0][i] << "|";
+                else // tabIndex == 2
+                    cout << tab2[j][0][i] << "|";
+            }
+            cout << endl;
+        }
+        cout << " +---------------------->" << endl;
+        cout << " |0|1|2|3|4|5|6|7|8|9|  X" << endl;
+        cout << endl;
+        
+        // Imprime a segunda parte da tabela (X-Y)
+        cout << " ^" << endl;
+        cout << "Y|____________________" << endl;
+        for (int i = 9; i >= 0; i--) {
+            cout << i << "|";
+            for (int j = 0; j < 10; j++) {
+                if(tabIndex == 1)
+                    cout << tab1[0][j][i] << "|"; 
+                else
+                    cout << tab2[0][j][i] << "|"; 
+            }
+            cout << endl;
+        }
+        cout << " +---------------------->" << endl;
+        cout << " |0|1|2|3|4|5|6|7|8|9|  X" << endl;
+        cout << endl;
+    }
+
+    if (tabIndex == 3) {
+		/*
+		Estas primeiras 6 linhas servem apenas para escrever o ínicio da tabela
+		O spacing é o espaço entre a tabela e a linha do meio (pode ser aumentado)
+		1- Topo
+		2- *primeira linha da tabela* | *segunda linha da tabela*
+		3- Fim
+		Tem alguns cálculos de pixeis aqui pelo meio para melhorar a consistência
+		*/
+
+        //Primeiro (X-Z)
+        cout << left << setw(tableWidth) << " ^";
+        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+        cout << " ^" << endl;
+        
+        cout << left << setw(tableWidth) << "Z|____________________";
+        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+        cout << "Z|____________________" << endl;
+
+        for (int i = 9; i >= 0; i--) {
+			//Imprime primeira tabela por linhas
+            cout << left << i << "|";
+            for (int j = 0; j < 10; j++)
+                cout << tab1[j][0][i] << "|";
+            
+			//Escreve o espaço livre entre os números e o verdadeiro fim da tabela
+            int leftSize = 3 + 20;
+            if (leftSize < tableWidth) {
+                cout << setw(tableWidth - leftSize + 1) << " ";
+            }
+            
+            //Linha no meio a dividir
+            cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+            
+			//Imprime segunda tabela por linhas
+            cout << i << "|";
+            for (int j = 0; j < 10; j++) 
+                cout << tab2[j][0][i] << "|";
+
+            cout << endl;
+        }
+        
+		//Imprime segunda parte das tabelas (finalizar a tabela)
+        cout << left << setw(tableWidth) << " +---------------------->";
+        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+        cout << " +---------------------->" << endl;
+        
+        cout << left << setw(tableWidth) << " |0|1|2|3|4|5|6|7|8|9|  X";
+        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+        cout << " |0|1|2|3|4|5|6|7|8|9|  X" << endl;
+        
+		//1 linha de espaço entre a tabela X-Z e a X-Y
+        cout << left << setw(tableWidth) << " ";
+        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+        cout << " " << endl;
+        
+		//Segundo (X-Y)
+        cout << left << setw(tableWidth) << " ^";
+        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+        cout << " ^" << endl;
+        
+        cout << left << setw(tableWidth) << "Y|____________________";
+        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+        cout << "Y|____________________" << endl;
+
+        for (int i = 9; i >= 0; i--) {
+			//Imprime primeira tabela por linhas
+            cout << left << i << "|";
+            for (int j = 0; j < 10; j++) 
+                cout << tab1[0][j][i] << "|";
+            
+			//Escreve o espaço livre entre os números e o verdadeiro fim da tabela
+            int leftSize = 3 + 20; 
+            if (leftSize < tableWidth) {
+                cout << setw(tableWidth - leftSize + 1) << " ";
+            }
+            
+            //Linha no meio
+            cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+            
+			//Imprime segunda tabela por linhas
+            cout << i << "|";
+            for (int j = 0; j < 10; j++) 
+                cout << tab2[0][j][i] << "|";
+    
+            cout << endl;
+        }
+		
+		//Imprime segunda parte das tabelas (finalizar a tabela)
+        cout << left << setw(tableWidth) << " +---------------------->";
+        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+        cout << " +---------------------->" << endl;
+        
+        cout << left << setw(tableWidth) << " |0|1|2|3|4|5|6|7|8|9|  X";
+        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+        cout << " |0|1|2|3|4|5|6|7|8|9|  X" << endl;
+    }
 }
 
 void CBatalha:: axisSelect(char axis, int player){
@@ -373,6 +417,8 @@ cout<<"Nick:";
 void CBatalha:: menu(){ 
 	int optionM, option1, option4, option0; //, option2, option3
 	bool sair = false;
+	showTab(3);
+	cin >> optionM;
 	do{
 		system("cls");
 		
