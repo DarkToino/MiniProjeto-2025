@@ -3,7 +3,6 @@
 #include <fstream>
 #include <cstdlib>
 #include <cstring>
-#include <string>
 //#include "cbatalha.h"
 using namespace std;
 
