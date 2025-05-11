@@ -246,18 +246,27 @@ void CBatalha:: axisSelect(char axis, int tabIndex){
 		
 		for (int i = 0; i < 10; i++){
 			if (tabIndex == 1){
-				if (tab1[i][firstDigit][secondDigit] == '+')
+				if (tab1[i][firstDigit][secondDigit] == '+'){
 					gameTab1[i][firstDigit][secondDigit] = 'X';
-				else
+					cout << "Foi atinjida uma nave inimiga!" << endl;
+				}
+				else {
 					gameTab1[i][firstDigit][secondDigit] = 'o';
+					cout << "Nada foi atinjido" << endl;
+				}
 			}
 			else{
-				if (tab2[i][firstDigit][secondDigit] == '+')
+				if (tab2[i][firstDigit][secondDigit] == '+'){
 					gameTab2[i][firstDigit][secondDigit] = 'X';
-				else
+					cout << "Foi atinjida uma nave inimiga!" << endl;
+					}
+				else {
 					gameTab2[i][firstDigit][secondDigit] = 'o';
+					cout << "Nada foi atinjido" << endl;
+				}
 			}
 		}
+		system ("cls");
 		showTab(3);
 	}
 	//Caso o player selecione Y, mostrar o eixo (X-Z)
