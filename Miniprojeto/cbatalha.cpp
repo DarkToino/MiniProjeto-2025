@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <cstring>
+#include <windows.h>
 //#include "cbatalha.h"
 using namespace std;
 
@@ -508,7 +509,9 @@ void CBatalha:: menu(){
 		cout<<"Selecione a opcao:";
 
         cin >> optionM;        
-			
+		if (optionM >= 0 && optionM <= 4) 
+              Beep(600, 150);
+            
 	}while(optionM > 4 || optionM  < 0);
 	
 	do{
@@ -528,11 +531,13 @@ void CBatalha:: menu(){
 					cout << "========================================" << endl;
 					cout << "Selecione a opcao:";
 					cin >> option1;
-					
-					if (option1 == 1)
-						game();
-					if (option1 == 0)
-						menu();
+					if (option1 == 1) {
+					Beep(600, 150);
+						game();            }
+					else if (option1 == 0) {
+					Beep(600, 150);
+					return menu();
+															}
 						
 				}while (option1 > 1 || option1 < 0);
 				
@@ -575,14 +580,69 @@ void CBatalha:: menu(){
 
 					
 					cin >> option4;
-					
-					if (option4 == 1){
-					}
+					Beep(600, 150);
+				if (option4 == 1) {
+            system("cls");
+            Beep(600, 150);
+        cout << "========================================" << endl;
+		cout << "|              COMO JOGAR              |" << endl;
+		cout << "========================================" << endl;
+		cout << "|  Batalha Naval 3D  um jogo por turnos|" << endl;
+		cout << "|  onde o objetivo e afundar todos os  |" << endl;
+		cout << "|  navios do inimigo. O jogo ocorre em |" << endl;
+		cout << "|  um espaco 3D.                       |" << endl;
+		cout << "|                                      |" << endl;
+		cout << "|  REGRAS:                             |" << endl;
+		cout << "|  - Posicione seus navios no espaco.  |" << endl;
+		cout << "|  - Em cada turno, informe 3 coords.  |" << endl;
+		cout << "|    Exemplo: 2 5 3 (x,y,z)            |" << endl;
+		cout << "|  - O jogador e informado se acertou  |" << endl;
+		cout<< "|     acertou ou errou 		       |" << endl;
+		cout << "|  - Vence quem afundar todos os navios|"<< endl;
+		cout << "|    do oponente primeiro.             |" << endl;
+		cout << "|                                      |" << endl;
+		cout << "========================================" << endl;
+		cout << "| Pressione ENTER para voltar ao menu  |" << endl;
+		cout << "========================================" << endl;
+
+            cin.ignore(); // limpa o enter anterior
+            cin.get();    // espera que o utilizador digite qualquer tecla
+            Beep(600, 150);
+            return menu(); 
+        }
 					
 					if (option4 == 2){
+				system("cls");
+				Beep(600, 150);
+		cout << "========================================" << endl;
+		cout << "|               HOW TO PLAY            |" << endl;
+		cout << "========================================" << endl;
+		cout << "|  3D Battleship is a turn-based game  |" << endl;
+		cout << "|  where the goal is to sink all the   |" << endl;
+		cout << "|  enemy's ships. The game takes place |" << endl;
+		cout << "|  in a 3D space.                      |" << endl;
+		cout << "|                                      |" << endl;
+		cout << "|  RULES:                              |" << endl;
+		cout << "|  - Position your ships in the space. |" << endl;
+		cout << "|  - In each turn provide 3 coordinates|" << endl;
+		cout << "|    Example: 2 5 3 (x, y, z)          |" << endl;
+		cout << "|  - The player is informed if they hit|" << endl;
+		cout << "|    or miss        	 	       |" << endl;
+		cout << "|  - The winner is the one who sinks   |" << endl;
+		cout << "|    all the opponent's ships first.   |" << endl;
+		cout << "|                                      |" << endl;
+		cout << "========================================" << endl;
+		cout << "| Press ENTER to return to the menu    |" << endl;
+		cout << "========================================" << endl;
+			cin.ignore(); // limpa o enter anterior
+            cin.get();    // espera que o utilizador digite qualquer tecla
+            Beep(600, 150);
+            return menu(); 
 					}
 					
-					if (option4 == 0) menu();
+					if (option4 == 0)
+						Beep(600, 150);
+					 menu();
 					
 				}while (option4 >2 || option4 < 0);
 				
@@ -603,7 +663,7 @@ void CBatalha:: menu(){
 
 					
 					cin >> option0;
-					
+					Beep(600, 150);
 					if (option0 == 1){
 						system("cls");
 						
