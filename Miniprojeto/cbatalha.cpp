@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <windows.h>
+#include <mmsystem.h> 
 //#include "cbatalha.h"
 using namespace std;
 
@@ -502,6 +503,7 @@ void CBatalha:: menu(){
 		cout << "| 2. Configuracoes                       |" << endl;
 		cout << "| 3. Historico                           |" << endl;
 		cout << "| 4. Como Jogar                          |" << endl;
+		cout << "| 5. Musica                     	 |" << endl;
 		cout << "|                                        |" << endl;
 		cout << "|                                        |" << endl;
 		cout << "| 0. Sair                                |" << endl;
@@ -509,10 +511,10 @@ void CBatalha:: menu(){
 		cout<<"Selecione a opcao:";
 
         cin >> optionM;        
-		if (optionM >= 0 && optionM <= 4) 
+		if (optionM >= 0 && optionM <= 5) 
               Beep(600, 150);
             
-	}while(optionM > 4 || optionM  < 0);
+	}while(optionM > 5 || optionM  < 0);
 	
 	do{
 		switch(optionM){
@@ -572,6 +574,7 @@ void CBatalha:: menu(){
 					cout << "|                                      |" << endl;
 					cout << "|  1. Portugues                        |" << endl;
 					cout << "|  2. Ingles                           |" << endl;
+					cout << "|  3. Espanhol                         |" << endl;
 					cout << "|                                      |" << endl;
 					cout << "|  0. Sair                             |" << endl;
 					cout << "|                                      |" << endl;
@@ -639,13 +642,73 @@ void CBatalha:: menu(){
             Beep(600, 150);
             return menu(); 
 					}
+					if (option4 == 3){
+				system("cls");
+				Beep(600, 150);
+	cout << "========================================" << endl;
+	cout << "|            COMO JUGAR                |" << endl;
+	cout << "========================================" << endl;
+	cout << "|  Batalla Naval 3D es un juego por    |" << endl;
+	cout << "|  turnos cuyo objetivo es hundir todos|" << endl;
+	cout << "|  los barcos enemigos. El juego se    |" << endl;
+	cout << "|  desarrolla en un espacio 3D.        |" << endl;
+	cout << "|                                      |" << endl;
+	cout << "|  REGLAS:                             |" << endl;
+	cout << "|  - Coloca tus barcos en el espacio.  |" << endl;
+	cout << "|  - En cada turno, ingresa 3 coords.  |" << endl;
+	cout << "|    Ejemplo: 2 5 3 (x, y, z)          |" << endl;
+	cout << "|  - Se informa si acertaste o fallaste|" << endl;
+	cout << "|  - Gana el primero en hundir todos   |" << endl;
+	cout << "|    los barcos del oponente.          |" << endl;
+	cout << "|                                      |" << endl;
+	cout << "========================================" << endl;
+	cout << "| Presiona ENTER para volver al menu   |" << endl;
+	cout << "========================================" << endl;
+
+			cin.ignore();
+            cin.get();    
+            Beep(600, 150);
+            return menu(); 
+					}
 					
 					if (option4 == 0)
 						Beep(600, 150);
 					 menu();
 					
 				}while (option4 >2 || option4 < 0);
-				
+			
+			case 5: 
+    int optionMusic;
+    do {
+        system("cls");
+        cout << "========================================" << endl;
+        cout << "|            MENU DE MUSICA            |" << endl;
+        cout << "========================================" << endl;
+        cout << "|  Deseja ligar ou desligar a musica?  |" << endl;
+        cout << "|                                      |" << endl;
+        cout << "|  1. Ligar musica                     |" << endl;
+        cout << "|  2. Desligar musica                  |" << endl;
+        cout << "|  0. Sair                             |" << endl;
+        cout << "|                                      |" << endl;
+        cout << "========================================" << endl;
+        cout << "Selecione uma opcao: ";
+        cin >> optionMusic;
+        Beep(600, 150);
+        
+           if (optionMusic == 1) {
+            PlaySound("undertale.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP); //ativa a musica ou repete																																								
+        }
+        if (optionMusic == 2) {
+            PlaySound(NULL, NULL, 0);  // para a musica
+        }
+        if (optionMusic == 0) {          // volta para menu com a musica se estiver ligado
+            break;  
+        }
+
+    } while (optionMusic != 0); 
+    return menu(); 
+
+    
 			case 0:							//criar uma opção se ainda houver um jogo aberto
 				do{
 					system("cls");
