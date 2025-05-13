@@ -503,7 +503,7 @@ void CBatalha:: menu(){
 		cout << "| 2. Configuracoes                       |" << endl;
 		cout << "| 3. Historico                           |" << endl;
 		cout << "| 4. Como Jogar                          |" << endl;
-		cout << "| 5. Musica                     	 |" << endl;
+		cout << "| 5. Musica                              |" << endl;
 		cout << "|                                        |" << endl;
 		cout << "|                                        |" << endl;
 		cout << "| 0. Sair                                |" << endl;
@@ -600,7 +600,7 @@ void CBatalha:: menu(){
 		cout << "|  - Em cada turno, informe 3 coords.  |" << endl;
 		cout << "|    Exemplo: 2 5 3 (x,y,z)            |" << endl;
 		cout << "|  - O jogador e informado se acertou  |" << endl;
-		cout<< "|     acertou ou errou 		       |" << endl;
+		cout << "|     acertou ou errou 		        |" << endl;
 		cout << "|  - Vence quem afundar todos os navios|"<< endl;
 		cout << "|    do oponente primeiro.             |" << endl;
 		cout << "|                                      |" << endl;
@@ -630,7 +630,7 @@ void CBatalha:: menu(){
 		cout << "|  - In each turn provide 3 coordinates|" << endl;
 		cout << "|    Example: 2 5 3 (x, y, z)          |" << endl;
 		cout << "|  - The player is informed if they hit|" << endl;
-		cout << "|    or miss        	 	       |" << endl;
+		cout << "|    or miss        	 	            |" << endl;
 		cout << "|  - The winner is the one who sinks   |" << endl;
 		cout << "|    all the opponent's ships first.   |" << endl;
 		cout << "|                                      |" << endl;
