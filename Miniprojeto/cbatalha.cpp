@@ -21,6 +21,8 @@ class CBatalha{
 		char tab2[10][10][10];	//Naves do jogador 2
 		char gameTab1[10][10][10];	//Jogadas do jogador 1
 		char gameTab2[10][10][10];	//Jogadas do jogador 2
+
+		int plays = 0; //Numero de jogadas
 		
 		//cores para as diferentes naves (https://dev.to/tenry/terminal-colors-in-c-c-3dgc)
 		//A -> Caças, B -> Fragatas, C -> Contratorpedeiros, D -> Cruzador, E -> Nave-mãe
@@ -42,10 +44,12 @@ class CBatalha{
 		CBatalha();
 		
 		void menu();
-		void game();
+		void shipSelection();
 		void showTab(int);
 		void axisSelect(char, int);
 		void writeInTab(int, int);
+		bool verifyWin();
+		void game();
 	
 };
 
@@ -133,6 +137,10 @@ void CBatalha::showTab(int tabIndex) {
 		Tem alguns cálculos de pixeis aqui pelo meio para melhorar a consistência
 		*/
         //Primeiro (X-Z)
+		cout << left << setw(tableWidth) << "Jogador 1: "/*<< adicionar nome do jogador 1*/;
+		cout << setw(spacing - 4) << " " << "Jogada: " << plays << setw(spacing - 4) << " ";
+		cout << "Jogador 2: "/*<< adicionar nome do jogador 2*/ << endl;
+
         cout << left << setw(tableWidth) << " ^";
         cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
         cout << " ^" << endl;
@@ -401,94 +409,106 @@ void CBatalha:: writeInTab(int type, int tabIndex){
 			break;
 	}
 }
+
+bool CBatalha:: verifyWin(){
+	int temp1 = 0, temp2 = 0;
+	for (int i = 0; i < 10; i++){
+		for (int j = 0; j < 10; j++){
+			for (int k = 0; k < 10; k++){
+				if (gameTab1[i][j][k] == 'X')
+					temp1++;
+
+				if (gameTab2[i][j][k] == 'X')
+					temp2++;	
+			}
+		}
+	}
+	//4 + 3 × 2 + 2 × 3 + 4 + 9 x 3 = 47 quantidade de cubos que são naves
+	if (temp1 == 47)
+		return true;
+	if (temp2 == 47)
+		return true;
+	else
+		return false;
+}
+
+void CBatalha:: shipSelection(){
+	Player player1, player2;
 	
+	for (int j = 1; j <= 2; j++){
+		system ("cls");
+		
+		if (j == 1){
+			cout << "========================================" << endl;
+			cout << "|                                      |" << endl;
+			cout << "|   Insira o nome do primeiro jogador  |" << endl;
+			cout << "|                                      |" << endl;
+			cout << "========================================" << endl;
+			cout << "Nickname:";
+
+			cin >> player1.name;
+		}
+		else {
+			cout << "========================================" << endl;
+			cout << "|                                      |" << endl;
+			cout << "|   Insira o nome do segundo jogador   |" << endl;
+			cout << "|                                      |" << endl;
+			cout << "========================================" << endl;
+			cout << "Nickname:";
+
+			cin >> player2.name;
+		}
+		
+		system ("cls");
+		
+		for (int i = 0; i < 4; i++){	//caça são classe 1
+			showTab(j);
+			writeInTab(1, j);	
+			system ("cls");
+		}
+		for (int i = 0; i < 3; i++){	//fragatas são classe 2
+			showTab(j);
+			writeInTab(2, j);	
+			system ("cls");
+		}
+		for (int i = 0; i < 2; i++){	//contratorpedeiros são classe 3
+			showTab(j);
+			writeInTab(3, j);	
+			system ("cls");
+		}
+		//cruzador são classe 4
+		showTab(j);
+		writeInTab(4, j);	
+		system ("cls");
+		//name-mãe são classe 5
+		showTab(j);
+		writeInTab(5, j);	
+		system ("cls");
+	}
+}
 
 void CBatalha:: game(){
-	Player player1;
-	Player player2;
-	
 	char axis;
-	
-	system ("cls");
-		
-cout << "========================================" << endl;
-cout << "|                                      |" << endl;
-cout << "|   Insira o nome do primeiro jogador  |" << endl;
-cout << "|                                      |" << endl;
-cout << "========================================" << endl;
-cout << "Nickname:";
+	int plays = 0;		//numero de jogadas
+	shipSelection();
 
-	cin >> player1.name;
+	do{
+		plays++;
+		if (plays % 2 != 0){	//Vez do jogador 1
+			//vou ter de passar o nome para esta função para poder chamar agora	
+			cout << /*player1.name <<*/ " e a tua vez de jogar! Escolhe um eixo para lancar o disparo" << endl;
+		}
+		if (plays % 2 == 0){	//Vez do jogador 2
+			//vou ter de passar o nome para esta função para poder chamar agora	
+			cout << /*player2.name <<*/ " e a tua vez de jogar! Escolhe um eixo para lancar o disparo" << endl;
+		}
 	
-	system ("cls");
-	
-	for (int i = 0; i < 4; i++){	//caça são classe 1
-		showTab(1);
-		writeInTab(1, 1);	
-		system ("cls");
-	}
-	for (int i = 0; i < 3; i++){	//fragatas são classe 2
-		showTab(1);
-		writeInTab(2, 1);	
-		system ("cls");
-	}
-	for (int i = 0; i < 2; i++){	//contratorpedeiros são classe 3
-		showTab(1);
-		writeInTab(3, 1);	
-		system ("cls");
-	}
-	//cruzador são classe 4
-		showTab(1);
-		writeInTab(4, 1);	
-		system ("cls");
-	//name-mãe são classe 5
-		showTab(1);
-		writeInTab(5, 1);	
-		system ("cls");
-					
-cout << "========================================" << endl;
-cout << "|                                      |" << endl;
-cout << "|   Insira o nome do segundo jogador   |" << endl;
-cout << "|                                      |" << endl;
-cout << "========================================" << endl;
-cout << "Nickname:";
-
-	cin >> player2.name;
-		
-	system ("cls");
-		
-	for (int i = 0; i < 4; i++){	//caça são classe 1
-		showTab(2);
-		writeInTab(1, 2);	
-		system ("cls");
-	}
-	for (int i = 0; i < 3; i++){	//fragatas são classe 2
-		showTab(2);
-		writeInTab(2, 2);	
-		system ("cls");
-	}
-	for (int i = 0; i < 2; i++){	//contratorpedeiros são classe 3
-		showTab(2);
-		writeInTab(3, 2);	
-		system ("cls");
-	}
-	//cruzador são classe 4
-		showTab(2);
-		writeInTab(4, 2);	
-		system ("cls");
-	//name-mãe são classe 5
-		showTab(2);
-		writeInTab(5, 2);	
-		system ("cls");
-
-	cout << player1.name << " es o primeiro a jogar! Comeca por escolher um eixo para lancar o disparo" << endl;
 	cin >> axis;
 
-	axisSelect(axis, 1);
-	cin >> axis; 		//teste
-	menu();
+	axisSelect(axis, (plays % 2));
+	cin >> axis; //teste
+	}while (!verifyWin());
 }
-	
 void CBatalha:: menu(){ 
 	int optionM, option1, option4, option0; //, option2, option3
 	bool sair = false;
