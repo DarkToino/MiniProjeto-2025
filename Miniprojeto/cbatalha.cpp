@@ -572,18 +572,50 @@ void CBatalha:: menu(){
 					cout << endl;
 					cout << "========================================" << endl;
 				}while();
+				*/
+			case 3: 
+            do {
+                system("cls");
+                cout << "==========================================" << endl;
+                cout << "|           HISTORICO DOS JOGOS          |" << endl;
+                cout << "==========================================" << endl;
+                cout << "|  Mostrando os ultimos 100 jogos...     |" << endl;
+                cout << "==========================================" << endl;
+
+                const int MAX = 100;
+                string historico[MAX];   //numero maximo e 100
+                int total = 0;
+
+               
+                ifstream inFile("historico.txt");
+                if (inFile.is_open()) {
+                    while (total < MAX && getline(inFile, historico[total])) {			//abre ficheiro para leitura das 100 linhas se nao der da erro
+                        total++;
+                    }
+                    inFile.close();  
+                } else {
+                    cout << "Nao foi possivel abrir o arquivo de historico." << endl;
+                }
+
+               
+                for (int i = 0; i < total; i++) {
+                    cout << historico[i] << endl; 							//escreve todas as linhas do ficheiro txt
+                }
+
+                cout << endl;
+                cout << "==========================================" << endl;
+                cout << "| Pressione ENTER para voltar ao menu    |" << endl;
+                cout << "==========================================" << endl;
+
+                cin.ignore(); 
+				cin.get();   
+				Beep(600, 150);
+				return menu(); 
 				
-			case 3:
-				do{
-					system("cls");
-					
-					cout << "========================================" << endl;
-					cout << "
-					cout << endl;
-					cout << "========================================" << endl;
-				}while();
-			*/	
-			case 4:						//ou adicionar mais linguas ou alguma forma de traduzir um texto fornecido
+            } while (true); // vai exibir sempre ate apertarmos o enter
+       
+            
+			case 4:						
 				do{
 					system("cls");
 					
