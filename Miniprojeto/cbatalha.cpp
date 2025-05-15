@@ -23,13 +23,17 @@ class CBatalha{
 		char gameTab2[10][10][10];	//Jogadas do jogador 2
 
 		int plays = 0; //Numero de jogadas
+
+		//Jogadores 1 e 2 e seus nomes e pontuações
+		Player player1; 
+		Player player2;
 		
 		//cores para as diferentes naves (https://dev.to/tenry/terminal-colors-in-c-c-3dgc)
 		//A -> Caças, B -> Fragatas, C -> Contratorpedeiros, D -> Cruzador, E -> Nave-mãe
 		string A[4], B[3], C[2], D[1], E[1];
 		
 		const int tableWidth = 25;  
-    	const int spacing = 8;      
+    	const int spacing = 15;      
 		
 
 		const char* RED = "\033[31m";
@@ -129,17 +133,22 @@ void CBatalha::showTab(int tabIndex) {
 
     if (tabIndex == 3) {
 		/*
-		Estas primeiras 6 linhas servem apenas para escrever o ínicio da tabela
+		Estas primeiras linhas servem apenas para escrever o ínicio da tabela
 		O spacing é o espaço entre a tabela e a linha do meio (pode ser aumentado)
 		1- Topo
 		2- *primeira linha da tabela* | *segunda linha da tabela*
 		3- Fim
 		Tem alguns cálculos de pixeis aqui pelo meio para melhorar a consistência
 		*/
+
         //Primeiro (X-Z)
-		cout << left << setw(tableWidth) << "Jogador 1: "/*<< adicionar nome do jogador 1*/;
+		cout << left << setw(tableWidth) << "Jogador 1: "<< player1.name;
 		cout << setw(spacing - 4) << " " << "Jogada: " << plays << setw(spacing - 4) << " ";
-		cout << "Jogador 2: "/*<< adicionar nome do jogador 2*/ << endl;
+		cout << "Jogador 2: "<< player2.name << endl;
+
+		cout << left << setw(tableWidth) << "Pontuacao: " << player1.score;
+		cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+		cout << "Pontuacao: " << player2.score << endl;
 
         cout << left << setw(tableWidth) << " ^";
         cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
@@ -364,8 +373,15 @@ void CBatalha:: axisSelect(char axis, int tabIndex){
 
 void CBatalha:: writeInTab(int type, int tabIndex){
 	int temp, firstDigit, secondDigit, thirdDigit;
-	cout << "Insira as coordenadas em que deseja colocar a nave (ex. 000)" << endl;
-	cin >> temp;
+	
+	do{
+		cout << "Insira as coordenadas em que deseja colocar a nave (ex. 000)" << endl;
+		cin >> temp;
+		
+		if (temp > 999 || temp < 0){
+			cout << "O valor tem de ser entre 0 e 999!" << endl;
+		}
+	}while (temp > 999 || temp < 0);
 	
 	//pega nas coords por exemplo 000, divide por 100 obtem o primeiro, divide por 10 e vê o resto por 10 obtem o segundo, ve o resto por 10 obtem o terceiro
 	firstDigit = temp / 100;
@@ -411,30 +427,28 @@ void CBatalha:: writeInTab(int type, int tabIndex){
 }
 
 bool CBatalha:: verifyWin(){
-	int temp1 = 0, temp2 = 0;
+	player1.score = player2.score = 0;
 	for (int i = 0; i < 10; i++){
 		for (int j = 0; j < 10; j++){
 			for (int k = 0; k < 10; k++){
 				if (gameTab1[i][j][k] == 'X')
-					temp1++;
+					player1.score++;
 
 				if (gameTab2[i][j][k] == 'X')
-					temp2++;	
+					player2.score++;	
 			}
 		}
 	}
 	//4 + 3 × 2 + 2 × 3 + 4 + 9 x 3 = 47 quantidade de cubos que são naves
-	if (temp1 == 47)
+	if (player1.score == 47)
 		return true;
-	if (temp2 == 47)
+	if (player2.score == 47)
 		return true;
 	else
 		return false;
 }
 
 void CBatalha:: shipSelection(){
-	Player player1, player2;
-	
 	for (int j = 1; j <= 2; j++){
 		system ("cls");
 		
@@ -462,27 +476,27 @@ void CBatalha:: shipSelection(){
 		system ("cls");
 		
 		for (int i = 0; i < 4; i++){	//caça são classe 1
-			showTab(j);
-			writeInTab(1, j);	
+			writeInTab(1, j);
+			showTab(j);	
 			system ("cls");
 		}
 		for (int i = 0; i < 3; i++){	//fragatas são classe 2
-			showTab(j);
-			writeInTab(2, j);	
+			writeInTab(2, j);
+			showTab(j);	
 			system ("cls");
 		}
 		for (int i = 0; i < 2; i++){	//contratorpedeiros são classe 3
-			showTab(j);
 			writeInTab(3, j);	
+			showTab(j);
 			system ("cls");
 		}
 		//cruzador são classe 4
-		showTab(j);
 		writeInTab(4, j);	
+		showTab(j);
 		system ("cls");
 		//name-mãe são classe 5
-		showTab(j);
 		writeInTab(5, j);	
+		showTab(j);
 		system ("cls");
 	}
 }
@@ -495,12 +509,10 @@ void CBatalha:: game(){
 	do{
 		plays++;
 		if (plays % 2 != 0){	//Vez do jogador 1
-			//vou ter de passar o nome para esta função para poder chamar agora	
-			cout << /*player1.name <<*/ " e a tua vez de jogar! Escolhe um eixo para lancar o disparo" << endl;
+			cout << player1.name << " e a tua vez de jogar! Escolhe um eixo para lancar o disparo" << endl;
 		}
 		if (plays % 2 == 0){	//Vez do jogador 2
-			//vou ter de passar o nome para esta função para poder chamar agora	
-			cout << /*player2.name <<*/ " e a tua vez de jogar! Escolhe um eixo para lancar o disparo" << endl;
+			cout << player2.name << " e a tua vez de jogar! Escolhe um eixo para lancar o disparo" << endl;
 		}
 	
 	cin >> axis;
@@ -510,7 +522,7 @@ void CBatalha:: game(){
 	}while (!verifyWin());
 }
 void CBatalha:: menu(){ 
-	int optionM, option1, option4, option0; //, option2, option3
+	int optionM, option1, , option3, option4, option0; //, option2
 	bool sair = false;
 
 	do{
@@ -582,7 +594,7 @@ void CBatalha:: menu(){
                 cout << "|  Mostrando os ultimos 100 jogos...     |" << endl;
                 cout << "==========================================" << endl;
 
-                const int MAX = 20; 				//meti os 20 para ser mais facil testar
+                const int MAX = 20; 				//meti os 20 para ser mais facil testar (depois podes mudar isto para variável global fora de tudo mesmo no inicio)
                 string historico[MAX];  
                 int total = 0;
 
