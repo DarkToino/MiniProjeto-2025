@@ -582,8 +582,8 @@ void CBatalha:: menu(){
                 cout << "|  Mostrando os ultimos 100 jogos...     |" << endl;
                 cout << "==========================================" << endl;
 
-                const int MAX = 100;
-                string historico[MAX];   //numero maximo e 100
+                const int MAX = 20; 				//meti os 20 para ser mais facil testar
+                string historico[MAX];  
                 int total = 0;
 
                
@@ -610,9 +610,20 @@ void CBatalha:: menu(){
                 cin.ignore(); 
 				cin.get();   
 				Beep(600, 150);
-				return menu(); 
-				
-            } while (true); // vai exibir sempre ate apertarmos o enter
+				 ofstream outFile("historico.txt", ios::trunc);  //limpa o texto e reescreve oque guardou la em cima
+        if (outFile.is_open()) {												//faz com que a linha mais "antiga" desapareca
+           
+            for (int i = 0; i < total; i++) {					//imprime os 100 linhas
+                outFile << historico[i] << endl;			
+            }
+            outFile.close();
+        } else {
+            cout << "Nao foi possivel abrir o arquivo para reescrever." << endl;
+        }
+
+        return menu();  
+
+    } while (true);  //fica o texto na tela ate ser imprmido o enter
        
             
 			case 4:						
