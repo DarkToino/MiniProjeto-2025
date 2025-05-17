@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #include <windows.h>
 #include <mmsystem.h> 
 //#include "cbatalha.h"
@@ -120,9 +121,9 @@ void CBatalha::showTab(int tabIndex) {
             cout << i << "|";
             for (int j = 0; j < 10; j++) {
                 if(tabIndex == 1)
-                    cout << tab1[0][j][i] << "|"; 
+                    cout << tab1[j][i][0] << "|"; 
                 else
-                    cout << tab2[0][j][i] << "|"; 
+                    cout << tab2[j][i][0] << "|"; 
             }
             cout << endl;
         }
@@ -142,21 +143,21 @@ void CBatalha::showTab(int tabIndex) {
 		*/
 
         //Primeiro (X-Z)
-		cout << left << setw(tableWidth) << "Jogador 1: "<< player1.name;
+		cout << left << setw(tableWidth) << (string("Jogador 1: ") + string(player1.name));
 		cout << setw(spacing - 4) << " " << "Jogada: " << plays << setw(spacing - 4) << " ";
-		cout << "Jogador 2: "<< player2.name << endl;
+		cout << "Jogador 2: " << player2.name << endl;
 
-		cout << left << setw(tableWidth) << "Pontuacao: " << player1.score;
+		cout << left << setw(tableWidth) << (string("Pontuacao: ") + to_string(player1.score));
 		cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
 		cout << "Pontuacao: " << player2.score << endl;
 
-        cout << left << setw(tableWidth) << " ^";
-        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
-        cout << " ^" << endl;
-        
-        cout << left << setw(tableWidth) << "Z|____________________";
-        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
-        cout << "Z|____________________" << endl;
+		cout << left << setw(tableWidth) << " ^";
+		cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+		cout << " ^" << endl;
+
+		cout << left << setw(tableWidth) << "Z|____________________";
+		cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+		cout << "Z|____________________" << endl;
 
         for (int i = 9; i >= 0; i--) {
 			//Imprime primeira tabela por linhas
@@ -238,137 +239,157 @@ void CBatalha::showTab(int tabIndex) {
     }
 }
 
-void CBatalha:: axisSelect(char axis, int tabIndex){
-	int firstDigit, secondDigit, temp;
-	//Caso o player selecione X, mostrar o eixo (Y-Z)
-	if (axis == 'X' || axis == 'x'){
-		cout << " ^" << endl;
-		cout << "Y|____________________" << endl;
-		for (int i = 9; i >= 0; i--){
-			cout << i << "|";
-			for (int j = 0; j < 10; j++){
-				if (tabIndex == 1)
-					cout << gameTab1[0][i][j] << "|";
-				else
-					cout << gameTab2[0][i][j] << "|";
-			}
-		cout << endl;
-		}
-		cout << " +---------------------->" << endl;
-		cout << " |0|1|2|3|4|5|6|7|8|9|  Z" << endl;
-		cout << endl;
-		cout << "Em seguida escolhe uma coordenada para atacar (ex.00)" << endl;
+void CBatalha::axisSelect(char axis, int tabIndex){
+    int firstDigit, secondDigit, temp;
+    switch(axis){
+        case 'X':
+        case 'x':
+            cout << " ^" << endl;
+            cout << "Y|____________________" << endl;
+            for (int i = 9; i >= 0; i--){
+                cout << i << "|";
+                for (int j = 0; j < 10; j++){
+                    if (tabIndex == 1)
+                        cout << gameTab1[0][i][j] << "|";
+                    else
+                        cout << gameTab2[0][i][j] << "|";
+                }
+                cout << endl;
+            }
+            cout << " +---------------------->" << endl;
+            cout << " |0|1|2|3|4|5|6|7|8|9|  Z" << endl;
+            cout << endl;
+            cout << "Em seguida escolhe uma coordenada para atacar (ex.00)" << endl;
 
-		cin >> temp;
-		firstDigit = temp / 10;
-		secondDigit = temp % 10;
-		
-		for (int i = 0; i < 10; i++){
-			if (tabIndex == 1){
-				if (tab1[i][firstDigit][secondDigit] == '+'){
-					gameTab1[i][firstDigit][secondDigit] = 'X';
-					cout << "Foi atinjida uma nave inimiga!" << endl;
-				}
-				else {
-					gameTab1[i][firstDigit][secondDigit] = 'o';
-					cout << "Nada foi atinjido" << endl;
-				}
-			}
-			else{
-				if (tab2[i][firstDigit][secondDigit] == '+'){
-					gameTab2[i][firstDigit][secondDigit] = 'X';
-					cout << "Foi atinjida uma nave inimiga!" << endl;
-					}
-				else {
-					gameTab2[i][firstDigit][secondDigit] = 'o';
-					cout << "Nada foi atinjido" << endl;
-				}
-			}
-		}
-		system ("cls");
-		showTab(3);
-	}
-	//Caso o player selecione Y, mostrar o eixo (X-Z)
-	else if (axis == 'Y' || axis == 'y'){
-		cout << " ^" << endl;
-		cout << "X|____________________" << endl;
-		for (int i = 9; i >= 0; i--){
-			cout << i << "|";
-			for (int j = 0; j < 10; j++){
-				if (tabIndex == 1)
-					cout << gameTab1[i][0][j] << "|";
-				else
-					cout << gameTab2[i][0][j] << "|";
-			}
-		cout << endl;
-		}
-		cout << " +---------------------->" << endl;
-		cout << " |0|1|2|3|4|5|6|7|8|9|  Z" << endl;
-		cout << endl;
-		cout << "Em seguida escolhe uma coordenada para atacar (ex.00)" << endl;
+            cin >> temp;
+            firstDigit = temp / 10;
+            secondDigit = temp % 10;
+        
+            for (int i = 0; i < 10; i++){
+                if (tabIndex == 1){
+                    if (tab1[i][firstDigit][secondDigit] == '+'){
+                        gameTab1[i][firstDigit][secondDigit] = 'X';
+                        cout << "Foi atinjida uma nave inimiga!" << endl;
+                    }
+                    else {
+                        gameTab1[i][firstDigit][secondDigit] = 'o';
+                        cout << "Nada foi atinjido" << endl;
+                    }
+                }
+                else{
+                    if (tab2[i][firstDigit][secondDigit] == '+'){
+                        gameTab2[i][firstDigit][secondDigit] = 'X';
+                        cout << "Foi atinjida uma nave inimiga!" << endl;
+                    }
+                    else {
+                        gameTab2[i][firstDigit][secondDigit] = 'o';
+                        cout << "Nada foi atinjido" << endl;
+                    }
+                }
+            }
+            system("cls");
+            break;
+        
+        case 'Y':
+        case 'y':
+            cout << " ^" << endl;
+            cout << "X|____________________" << endl;
+            for (int i = 9; i >= 0; i--){
+                cout << i << "|";
+                for (int j = 0; j < 10; j++){
+                    if (tabIndex == 1)
+                        cout << gameTab1[i][0][j] << "|";
+                    else
+                        cout << gameTab2[i][0][j] << "|";
+                }
+                cout << endl;
+            }
+            cout << " +---------------------->" << endl;
+            cout << " |0|1|2|3|4|5|6|7|8|9|  Z" << endl;
+            cout << endl;
+            cout << "Em seguida escolhe uma coordenada para atacar (ex.00)" << endl;
 
-		cin >> temp;
-		firstDigit = temp / 10;
-		secondDigit = temp % 10;
+            cin >> temp;
+            firstDigit = temp / 10;
+            secondDigit = temp % 10;
 
-		for (int i = 0; i < 10; i++){
-			if (tabIndex == 1){
-				if (tab1[firstDigit][i][secondDigit] == '+')
-					gameTab1[firstDigit][i][secondDigit] = 'X';
-				else
-					gameTab1[firstDigit][i][secondDigit] = 'o';
-			}
-			else {
-				if (tab1[firstDigit][i][secondDigit] == '+')
-					gameTab2[firstDigit][i][secondDigit] = 'X';
-				else
-					gameTab2[firstDigit][i][secondDigit] = 'o';
-			}
-		}
-		showTab(3);
-	}		
-	//Caso o player selecione Z, mostrar o eixo (X-Y)
-	else if (axis == 'Z' || axis == 'z'){
-		cout << " ^" << endl;
-		cout << "X|____________________" << endl;
-		for (int i = 9; i >= 0; i--){
-			cout << i << "|";
-			for (int j = 0; j < 10; j++){
-				if (tabIndex == 1)
-					cout << gameTab1[i][j][0] << "|";
-				else
-					cout << gameTab2[i][j][0] << "|";
-			}
-		cout << endl;
-		}
-		cout << " +---------------------->" << endl;
-		cout << " |0|1|2|3|4|5|6|7|8|9|  Y" << endl;
-		cout << endl;
-		cout << "Em seguida escolhe uma coordenada para atacar (ex.00)" << endl;
+            for (int i = 0; i < 10; i++){
+                if (tabIndex == 1){
+                    if (tab1[firstDigit][i][secondDigit] == '+'){
+                        gameTab1[firstDigit][i][secondDigit] = 'X';
+                        cout << "Foi atinjida uma nave inimiga!" << endl;
+                    }
+                    else {
+                        gameTab1[firstDigit][i][secondDigit] = 'o';
+                        cout << "Nada foi atinjido" << endl;
+                    }
+                }
+                else {
+                    if (tab2[firstDigit][i][secondDigit] == '+'){
+                        gameTab2[firstDigit][i][secondDigit] = 'X';
+                        cout << "Foi atinjida uma nave inimiga!" << endl;
+                    }
+                    else {
+                        gameTab2[firstDigit][i][secondDigit] = 'o';
+                        cout << "Nada foi atinjido" << endl;
+                    }
+                }
+            }
+            system("cls");
+            break;
+        
+        case 'Z':
+        case 'z':
+            cout << " ^" << endl;
+            cout << "X|____________________" << endl;
+            for (int i = 9; i >= 0; i--){
+                cout << i << "|";
+                for (int j = 0; j < 10; j++){
+                    if (tabIndex == 1)
+                        cout << gameTab1[i][j][0] << "|";
+                    else
+                        cout << gameTab2[i][j][0] << "|";
+                }
+                cout << endl;
+            }
+            cout << " +---------------------->" << endl;
+            cout << " |0|1|2|3|4|5|6|7|8|9|  Y" << endl;
+            cout << endl;
+            cout << "Em seguida escolhe uma coordenada para atacar (ex.00)" << endl;
 
-		cin >> temp;
-		firstDigit = temp / 10;
-		secondDigit = temp % 10;
+            cin >> temp;
+            firstDigit = temp / 10;
+            secondDigit = temp % 10;
 
-		for (int i = 0; i < 10; i++){
-			if (tabIndex == 1){
-				if (tab1[firstDigit][secondDigit][i] == '+')
-					gameTab1[firstDigit][secondDigit][i] = 'X';
-				else
-					gameTab1[firstDigit][secondDigit][i] = 'o';
-			}
-			else {
-				if (tab1[firstDigit][secondDigit][i] == '+')
-					gameTab2[firstDigit][secondDigit][i] = 'X';
-				else
-					gameTab2[firstDigit][secondDigit][i] = 'o';
-			}
-		}
-		showTab(3);
-	}else{
-		cout << "Tem de inserir um eixo correto! (X, Y ou Z)" << endl;
-		return;
-	}
+            for (int i = 0; i < 10; i++){
+                if (tabIndex == 1){
+                    if (tab1[firstDigit][secondDigit][i] == '+'){
+                        gameTab1[firstDigit][secondDigit][i] = 'X';
+                        cout << "Foi atinjida uma nave inimiga!" << endl;
+                    }
+                    else {
+                        gameTab1[firstDigit][secondDigit][i] = 'o';
+                        cout << "Nada foi atinjido" << endl;
+                    }
+                }
+                else {
+                    if (tab2[firstDigit][secondDigit][i] == '+'){
+                        gameTab2[firstDigit][secondDigit][i] = 'X';
+                        cout << "Foi atinjida uma nave inimiga!" << endl;
+                    }
+                    else {
+                        gameTab2[firstDigit][secondDigit][i] = 'o';
+                        cout << "Nada foi atinjido" << endl;
+                    }
+                }
+            }
+            system("cls");
+            break;
+            
+        default:
+            cout << "Tem de inserir um eixo correto! (X, Y ou Z)" << endl;
+            return;
+    }    
 }
 
 void CBatalha:: writeInTab(int type, int tabIndex){
@@ -449,6 +470,7 @@ bool CBatalha:: verifyWin(){
 }
 
 void CBatalha:: shipSelection(){
+	//1 = player1, 2 = player2
 	for (int j = 1; j <= 2; j++){
 		system ("cls");
 		
@@ -476,53 +498,59 @@ void CBatalha:: shipSelection(){
 		system ("cls");
 		
 		for (int i = 0; i < 4; i++){	//caça são classe 1
+			showTab(j);
 			writeInTab(1, j);
-			showTab(j);	
 			system ("cls");
 		}
 		for (int i = 0; i < 3; i++){	//fragatas são classe 2
+			showTab(j);
 			writeInTab(2, j);
-			showTab(j);	
 			system ("cls");
 		}
 		for (int i = 0; i < 2; i++){	//contratorpedeiros são classe 3
-			writeInTab(3, j);	
 			showTab(j);
-			system ("cls");
+			writeInTab(3, j);
+			system ("cls");	
 		}
 		//cruzador são classe 4
-		writeInTab(4, j);	
 		showTab(j);
-		system ("cls");
+		writeInTab(4, j);
+		system ("cls");	
 		//name-mãe são classe 5
-		writeInTab(5, j);	
 		showTab(j);
-		system ("cls");
+		writeInTab(5, j);
+		system ("cls");	
 	}
 }
 
 void CBatalha:: game(){
+	srand(time(0));
+	int randomNum = (rand() % 2) + 1;
 	char axis;
 	int plays = 0;		//numero de jogadas
 	shipSelection();
 
 	do{
 		plays++;
-		if (plays % 2 != 0){	//Vez do jogador 1
+		showTab(3);	
+		if (randomNum == 1){	//Vez do jogador 1
 			cout << player1.name << " e a tua vez de jogar! Escolhe um eixo para lancar o disparo" << endl;
 		}
-		if (plays % 2 == 0){	//Vez do jogador 2
+		if (randomNum == 2){	//Vez do jogador 2
 			cout << player2.name << " e a tua vez de jogar! Escolhe um eixo para lancar o disparo" << endl;
 		}
 	
 	cin >> axis;
 
-	axisSelect(axis, (plays % 2));
-	cin >> axis; //teste
+	axisSelect(axis, randomNum);
+		if (randomNum == 1)
+			randomNum++;
+		if (randomNum == 2)
+			randomNum--;
 	}while (!verifyWin());
 }
 void CBatalha:: menu(){ 
-	int optionM, option1, , option3, option4, option0; //, option2
+	int optionM, option1, option3, option4, option0; //, option2
 	bool sair = false;
 
 	do{
