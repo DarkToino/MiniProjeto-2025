@@ -6,7 +6,6 @@
 #include <ctime>
 #include <windows.h>
 #include <mmsystem.h> 
-//#include "cbatalha.h"
 using namespace std;
 
 const unsigned int MAX_NAME_LENGTH = 10;
@@ -55,6 +54,9 @@ class CBatalha{
 		void writeInTab(int, int);
 		bool verifyWin();
 		void game();
+		bool isPlacementValid(int x, int y, int z, char direction, int shipSize, int tabIndex);
+		void placeShip(int x, int y, int z, char direction, int shipSize, int tabIndex, char shipType);
+		void showShipInstructions(int shipType);
 	
 };
 
@@ -70,30 +72,7 @@ CBatalha::CBatalha(){
 			}
 		}
 	}
-	//inicializar as cores nas naves
-	/*
-	for (int i = 3; i >= 0; i--){
-		A[i] += RED;
-		if (i < 3){
-			B[i] += GREEN;
-			if (i < 2){
-				C[i] += YELLOW;
-				if (i < 1){
-					D[i] += BLUE;
-					E[i] += MAGENTA;
-				}
-			}
-		}
-	}
-	*/
 }
-
-/*
-CRIAR UMA FUNÇÃO QUE MOSTRA A TABELA DUPLA VAZIA
-
-Esta tabela é usada para as jogadas de cada jogador
-Compara as jogadas com a tabela original com as naves e atualiza esta tabela com as naves destruídas e com os locais falhados
-*/
 
 void CBatalha::showTab(int tabIndex) {
     if (tabIndex == 1 || tabIndex == 2) {
@@ -240,6 +219,7 @@ void CBatalha::showTab(int tabIndex) {
 }
 
 void CBatalha::axisSelect(char axis, int tabIndex){
+    char (*currentTab)[10][10] = (tabIndex == 1) ? gameTab1 : gameTab2;
     int firstDigit, secondDigit, temp;
     switch(axis){
         case 'X':
@@ -249,10 +229,7 @@ void CBatalha::axisSelect(char axis, int tabIndex){
             for (int i = 9; i >= 0; i--){
                 cout << i << "|";
                 for (int j = 0; j < 10; j++){
-                    if (tabIndex == 1)
-                        cout << gameTab1[0][i][j] << "|";
-                    else
-                        cout << gameTab2[0][i][j] << "|";
+                        cout << currentTab[0][j][i] << "|";
                 }
                 cout << endl;
             }
@@ -267,7 +244,7 @@ void CBatalha::axisSelect(char axis, int tabIndex){
         
             for (int i = 0; i < 10; i++){
                 if (tabIndex == 1){
-                    if (tab1[i][firstDigit][secondDigit] == '+'){
+                    if (tab1[i][firstDigit][secondDigit] != ' '){
                         gameTab1[i][firstDigit][secondDigit] = 'X';
                         cout << "Foi atinjida uma nave inimiga!" << endl;
                     }
@@ -277,7 +254,7 @@ void CBatalha::axisSelect(char axis, int tabIndex){
                     }
                 }
                 else{
-                    if (tab2[i][firstDigit][secondDigit] == '+'){
+                    if (tab2[i][firstDigit][secondDigit] != ' '){
                         gameTab2[i][firstDigit][secondDigit] = 'X';
                         cout << "Foi atinjida uma nave inimiga!" << endl;
                     }
@@ -287,6 +264,9 @@ void CBatalha::axisSelect(char axis, int tabIndex){
                     }
                 }
             }
+            cout << "Press ENTER para continuar..." << endl;
+            cin.ignore();
+            cin.get();
             system("cls");
             break;
         
@@ -297,10 +277,7 @@ void CBatalha::axisSelect(char axis, int tabIndex){
             for (int i = 9; i >= 0; i--){
                 cout << i << "|";
                 for (int j = 0; j < 10; j++){
-                    if (tabIndex == 1)
-                        cout << gameTab1[i][0][j] << "|";
-                    else
-                        cout << gameTab2[i][0][j] << "|";
+                    cout << currentTab[i][0][j] << "|";
                 }
                 cout << endl;
             }
@@ -315,7 +292,7 @@ void CBatalha::axisSelect(char axis, int tabIndex){
 
             for (int i = 0; i < 10; i++){
                 if (tabIndex == 1){
-                    if (tab1[firstDigit][i][secondDigit] == '+'){
+                    if (tab1[firstDigit][i][secondDigit] != ' '){
                         gameTab1[firstDigit][i][secondDigit] = 'X';
                         cout << "Foi atinjida uma nave inimiga!" << endl;
                     }
@@ -325,7 +302,7 @@ void CBatalha::axisSelect(char axis, int tabIndex){
                     }
                 }
                 else {
-                    if (tab2[firstDigit][i][secondDigit] == '+'){
+                    if (tab2[firstDigit][i][secondDigit] != ' '){
                         gameTab2[firstDigit][i][secondDigit] = 'X';
                         cout << "Foi atinjida uma nave inimiga!" << endl;
                     }
@@ -335,6 +312,9 @@ void CBatalha::axisSelect(char axis, int tabIndex){
                     }
                 }
             }
+            cout << "Press ENTER para continuar..." << endl;
+            cin.ignore();
+            cin.get();
             system("cls");
             break;
         
@@ -345,10 +325,7 @@ void CBatalha::axisSelect(char axis, int tabIndex){
             for (int i = 9; i >= 0; i--){
                 cout << i << "|";
                 for (int j = 0; j < 10; j++){
-                    if (tabIndex == 1)
-                        cout << gameTab1[i][j][0] << "|";
-                    else
-                        cout << gameTab2[i][j][0] << "|";
+                    cout << currentTab[i][j][0] << "|";
                 }
                 cout << endl;
             }
@@ -363,7 +340,7 @@ void CBatalha::axisSelect(char axis, int tabIndex){
 
             for (int i = 0; i < 10; i++){
                 if (tabIndex == 1){
-                    if (tab1[firstDigit][secondDigit][i] == '+'){
+                    if (tab1[firstDigit][secondDigit][i] != ' '){
                         gameTab1[firstDigit][secondDigit][i] = 'X';
                         cout << "Foi atinjida uma nave inimiga!" << endl;
                     }
@@ -373,7 +350,7 @@ void CBatalha::axisSelect(char axis, int tabIndex){
                     }
                 }
                 else {
-                    if (tab2[firstDigit][secondDigit][i] == '+'){
+                    if (tab2[firstDigit][secondDigit][i] != ' '){
                         gameTab2[firstDigit][secondDigit][i] = 'X';
                         cout << "Foi atinjida uma nave inimiga!" << endl;
                     }
@@ -383,93 +360,258 @@ void CBatalha::axisSelect(char axis, int tabIndex){
                     }
                 }
             }
+            cout << "Press ENTER para continuar..." << endl;
+            cin.ignore();
+            cin.get();
             system("cls");
             break;
             
         default:
             cout << "Tem de inserir um eixo correto! (X, Y ou Z)" << endl;
+            cout << "Press ENTER para continuar..." << endl;
+            cin.ignore();
+            cin.get();
             return;
     }    
 }
 
-void CBatalha:: writeInTab(int type, int tabIndex){
-	int temp, firstDigit, secondDigit, thirdDigit;
-	
-	do{
-		cout << "Insira as coordenadas em que deseja colocar a nave (ex. 000)" << endl;
-		cin >> temp;
-		
-		if (temp > 999 || temp < 0){
-			cout << "O valor tem de ser entre 0 e 999!" << endl;
-		}
-	}while (temp > 999 || temp < 0);
-	
-	//pega nas coords por exemplo 000, divide por 100 obtem o primeiro, divide por 10 e vê o resto por 10 obtem o segundo, ve o resto por 10 obtem o terceiro
-	firstDigit = temp / 100;
-    secondDigit = (temp / 10) % 10;
-    thirdDigit = temp % 10;
-	
-	switch(type){
-		case 1:
-			if (tabIndex == 1)
-				tab1[firstDigit][secondDigit][thirdDigit] = '+';
-			else
-				tab2[firstDigit][secondDigit][thirdDigit] = '+';
-			break;
-
-		case 2:
-			if (tabIndex == 1)
-				tab1[firstDigit][secondDigit][thirdDigit] = '+';
-			else
-				tab2[firstDigit][secondDigit][thirdDigit] = '+';
-			break;
-
-		case 3:
-			if (tabIndex == 1)
-				tab1[firstDigit][secondDigit][thirdDigit] = '+';
-			else
-				tab2[firstDigit][secondDigit][thirdDigit] = '+';
-			break;
-
-		case 4:
-			if (tabIndex == 1)
-				tab1[firstDigit][secondDigit][thirdDigit] = '+';
-			else
-				tab2[firstDigit][secondDigit][thirdDigit] = '+';
-			break;
-			
-		case 5:
-			if (tabIndex == 1)
-				tab1[firstDigit][secondDigit][thirdDigit] = '+';
-			else
-				tab2[firstDigit][secondDigit][thirdDigit] = '+';
-			break;
-	}
+void CBatalha:: showShipInstructions(int shipType) {
+    cout << "=== COLOCACAO DE NAVES ===" << endl;
+    switch(shipType) {
+        case 1:
+            //4 Caças de 1 cubo cada
+            cout << "Caca (1 cubo) - Total: 4" << endl;     
+            cout << "Esta nave ocupa apenas 1 posicao." << endl;
+            break;
+        case 2:
+            //3 Fragatas de 2 cubos cada
+            cout << "Fragata (2 cubos em linha) - Total: 3" << endl;    
+            cout << "Esta nave pode ser colocada:" << endl;
+            cout << "- Horizontalmente no eixo X (X)" << endl;
+            cout << "- Horizontalmente no eixo Y (Y)" << endl;
+            cout << "- Verticalmente no eixo Z (Z)" << endl;
+            break;
+        case 3:
+            //2 Contratorpedeiros de 3 cubos cada
+            cout << "Contratorpedeiro (3 cubos em linha) - Total: 2" << endl;
+            cout << "Esta nave pode ser colocada:" << endl;
+            cout << "- Horizontalmente no eixo X (X)" << endl;
+            cout << "- Horizontalmente no eixo Y (Y)" << endl;
+            cout << "- Verticalmente no eixo Z (Z)" << endl;
+            break;
+        case 4:
+            //1 Cruzador de 4 cubos
+            cout << "Cruzador (4 cubos em linha) - Total: 1" << endl;
+            cout << "Esta nave pode ser colocada:" << endl;
+            cout << "- Horizontalmente no eixo X (X)" << endl;
+            cout << "- Horizontalmente no eixo Y (Y)" << endl;
+            cout << "- Verticalmente no eixo Z (Z)" << endl;
+            break;
+        case 5:
+            //1 Nave mãe de 9 cubos 3x3x3
+            cout << "Nave-mae (9 cubos em cubo 3x3x3) - Total: 1" << endl;
+            cout << "Esta nave ocupa um cubo de 3x3x3 a partir da posicao escolhida." << endl;
+            cout << "Nao necessita de direcao." << endl;
+            break;
+    }
+    cout << "==========================" << endl;
 }
 
-bool CBatalha:: verifyWin(){
+bool CBatalha:: isPlacementValid(int x, int y, int z, char direction, int shipSize, int tabIndex) {
+    char (*currentTab)[10][10] = (tabIndex == 1) ? tab1 : tab2;
+    
+    // Para nave-mãe (cubo 3x3x3)
+    if (shipSize == 9) {
+        // Verifica se cabe no tabuleiro
+        if (x + 2 >= 10 || y + 2 >= 10 || z + 2 >= 10) return false;
+        
+        // Verifica se não há sobreposição
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 3; k++) {
+                    if (currentTab[x + i][y + j][z + k] != ' ') return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    // Para outras naves (linha)
+    switch(direction) {
+        case 'X':
+        case 'x':
+            if (x + shipSize > 10) return false;
+            for (int i = 0; i < shipSize; i++) {
+                if (currentTab[x + i][y][z] != ' ') return false;   //Não permite colocar a nave se ela sair do tabuleiro
+            }
+            break;
+        case 'Y':
+        case 'y':
+            if (y + shipSize > 10) return false;
+            for (int i = 0; i < shipSize; i++) {
+                if (currentTab[x][y + i][z] != ' ') return false;   //Não permite colocar a nave se ela sair do tabuleiro
+            }
+            break;
+        case 'Z':
+        case 'z':
+            if (z + shipSize > 10) return false;
+            for (int i = 0; i < shipSize; i++) {
+                if (currentTab[x][y][z + i] != ' ') return false;   //Não permite colocar a nave se ela sair do tabuleiro
+            }
+            break;
+        default:
+            return false;
+    }
+    return true;
+}
+
+void CBatalha:: placeShip(int x, int y, int z, char direction, int shipSize, int tabIndex, char shipType) {
+    //Esta linha é muito importante, ela cria um ponteiro apontado para a tabela atual
+    //Em seguida, ela compara com a tabela 1 e 2 para saber qual é a tabela correta e com isso não é preciso usar "tabIndex" a toda a hora
+    char (*currentTab)[10][10] = (tabIndex == 1) ? tab1 : tab2;
+    
+    // Para nave-mãe (cubo 3x3x3)
+    if (shipSize == 9) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 3; k++) {
+                    currentTab[x + i][y + j][z + k] = shipType;
+                }
+            }
+        }
+        return;
+    }
+    
+    // Para outras naves (linha)
+    switch(direction) {
+        case 'X':
+        case 'x':
+            for (int i = 0; i < shipSize; i++) {
+                currentTab[x + i][y][z] = shipType;
+            }
+            break;
+        case 'Y':
+        case 'y':
+            for (int i = 0; i < shipSize; i++) {
+                currentTab[x][y + i][z] = shipType;
+            }
+            break;
+        case 'Z':
+        case 'z':
+            for (int i = 0; i < shipSize; i++) {
+                currentTab[x][y][z + i] = shipType;
+            }
+            break;
+    }
+}
+
+void CBatalha::writeInTab(int type, int tabIndex) {
+    int temp, x, y, z;
+    char direction = ' ';
+    int shipSize;
+    char shipType;
+    //Existe uma "nave 0" vazia para ser mais fácil associar o tipo de nave ao tamanho dela
+    const char* shipNames[] = {"", "Caca", "Fragata", "Contratorpedeiro", "Cruzador", "Nave-mae"};
+    
+    // Determinar tamanho e tipo da nave
+    switch(type) {
+        case 1: shipSize = 1; shipType = 'A'; break;
+        case 2: shipSize = 2; shipType = 'B'; break;
+        case 3: shipSize = 3; shipType = 'C'; break;
+        case 4: shipSize = 4; shipType = 'D'; break;
+        case 5: shipSize = 9; shipType = 'E'; break;
+        default: return;
+    }
+    
+    showShipInstructions(type);
+    
+    do {
+        cout << "Insira as coordenadas para colocar o " << shipNames[type] << " (ex. 000): ";
+        cin >> temp;
+        
+        if (temp > 999 || temp < 0) {
+            cout << "O valor deve estar entre 0 e 999!" << endl;
+            continue;
+        }
+        
+        x = temp / 100;
+        y = (temp / 10) % 10;
+        z = temp % 10;
+        
+        //Para nave-mãe não precisa de direção
+        if (type == 5) {
+            if (isPlacementValid(x, y, z, ' ', shipSize, tabIndex)) {
+                placeShip(x, y, z, ' ', shipSize, tabIndex, shipType);
+                cout << "Nave-mae colocada com sucesso!" << endl;
+                break;
+            } 
+            else {cout << "Posicao invalida! A nave-mae precisa de espaco 3x3x3 livre." << endl;}
+        } 
+        else {
+            // Para outras naves, pedir direção
+            cout << "Escolha a direcao (X/Y/Z): ";
+            cin >> direction;
+            
+            if (isPlacementValid(x, y, z, direction, shipSize, tabIndex)) {
+                placeShip(x, y, z, direction, shipSize, tabIndex, shipType);
+                cout << shipNames[type] << " colocado com sucesso!" << endl;
+                break;
+            } 
+            else {cout << "Posicao invalida! Verifique se ha espaco suficiente e nao ha sobreposicao." << endl;}
+        }
+    } while (true);
+    
+    cout << "Pressione ENTER para continuar...";
+    cin.ignore();
+    cin.get();
+}
+
+bool CBatalha::verifyWin(){
 	player1.score = player2.score = 0;
 	for (int i = 0; i < 10; i++){
 		for (int j = 0; j < 10; j++){
 			for (int k = 0; k < 10; k++){
-				if (gameTab1[i][j][k] == 'X')
-					player1.score++;
-
-				if (gameTab2[i][j][k] == 'X')
-					player2.score++;	
+				if (gameTab1[i][j][k] == 'X') player1.score++;
+				if (gameTab2[i][j][k] == 'X') player2.score++;	
 			}
 		}
 	}
-	//4 + 3 × 2 + 2 × 3 + 4 + 9 x 3 = 47 quantidade de cubos que são naves
-	if (player1.score == 47)
-		return true;
-	if (player2.score == 47)
-		return true;
-	else
-		return false;
+	//4 caças (4x1) + 3 fragatas (3x2) + 2 contratorpedeiros (2x3) + 1 cruzador (1x4) + 1 nave-mãe (1x9) = 4+6+6+4+9 = 29
+
+	if (player1.score == 29) {
+        cout << player1.name << " venceu!" << endl;
+        
+        // Salvar resultado no histórico
+        /*
+        ofstream outFile("historico.txt", ios::app);
+        if (outFile.is_open()) {
+            time_t now = time(0);
+            char* dt = ctime(&now);
+            outFile << "Vencedor: " << player1.name << " vs " << player2.name << " - " << dt;
+            outFile.close();
+        }
+        */
+        return true;
+    }
+    if (player2.score == 29) {
+        cout << player2.name << " venceu!" << endl;
+        
+        // Salvar resultado no histórico
+        /*
+        ofstream outFile("historico.txt", ios::app);
+        if (outFile.is_open()) {
+            time_t now = time(0);
+            char* dt = ctime(&now);
+            outFile << "Vencedor: " << player2.name << " vs " << player1.name << " - " << dt;
+            outFile.close();
+        }
+        */
+        return true;
+    }
+    return false;
 }
 
-void CBatalha:: shipSelection(){
+void CBatalha::shipSelection(){
 	//1 = player1, 2 = player2
 	for (int j = 1; j <= 2; j++){
 		system ("cls");
@@ -480,7 +622,7 @@ void CBatalha:: shipSelection(){
 			cout << "|   Insira o nome do primeiro jogador  |" << endl;
 			cout << "|                                      |" << endl;
 			cout << "========================================" << endl;
-			cout << "Nickname:";
+			cout << "Nickname: ";
 
 			cin >> player1.name;
 		}
@@ -490,44 +632,67 @@ void CBatalha:: shipSelection(){
 			cout << "|   Insira o nome do segundo jogador   |" << endl;
 			cout << "|                                      |" << endl;
 			cout << "========================================" << endl;
-			cout << "Nickname:";
+			cout << "Nickname: ";
 
 			cin >> player2.name;
 		}
 		
 		system ("cls");
 		
-		for (int i = 0; i < 4; i++){	//caça são classe 1
+		// Colocar 4 caças
+		for (int i = 0; i < 4; i++){
+			cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
+			cout << "Colocando caca " << (i + 1) << " de 4" << endl;
 			showTab(j);
 			writeInTab(1, j);
 			system ("cls");
 		}
-		for (int i = 0; i < 3; i++){	//fragatas são classe 2
+		
+		// Colocar 3 fragatas
+		for (int i = 0; i < 3; i++){
+			cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
+			cout << "Colocando fragata " << (i + 1) << " de 3" << endl;
 			showTab(j);
 			writeInTab(2, j);
 			system ("cls");
 		}
-		for (int i = 0; i < 2; i++){	//contratorpedeiros são classe 3
+		
+		// Colocar 2 contratorpedeiros
+		for (int i = 0; i < 2; i++){
+			cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
+			cout << "Colocando contratorpedeiro " << (i + 1) << " de 2" << endl;
 			showTab(j);
 			writeInTab(3, j);
 			system ("cls");	
 		}
-		//cruzador são classe 4
+		
+		// Colocar 1 cruzador
+		cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
+		cout << "Colocando cruzador" << endl;
 		showTab(j);
 		writeInTab(4, j);
 		system ("cls");	
-		//name-mãe são classe 5
+		
+		// Colocar 1 nave-mãe
+		cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
+		cout << "Colocando nave-mae" << endl;
 		showTab(j);
 		writeInTab(5, j);
-		system ("cls");	
+		system ("cls");
+		
+		cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
+		cout << "Todas as naves foram colocadas!" << endl;
+		cout << "Pressione ENTER para continuar...";
+		cin.ignore();
+		cin.get();
 	}
 }
 
-void CBatalha:: game(){
+void CBatalha::game(){
 	srand(time(0));
 	int randomNum = (rand() % 2) + 1;
 	char axis;
-	int plays = 0;		//numero de jogadas
+	plays = 0;		//numero de jogadas
 	shipSelection();
 
 	do{
@@ -543,10 +708,8 @@ void CBatalha:: game(){
 	cin >> axis;
 
 	axisSelect(axis, randomNum);
-		if (randomNum == 1)
-			randomNum++;
-		if (randomNum == 2)
-			randomNum--;
+		if (randomNum == 1) randomNum++;
+		if (randomNum == 2) randomNum--;
 	}while (!verifyWin());
 }
 void CBatalha:: menu(){ 
@@ -571,8 +734,7 @@ void CBatalha:: menu(){
 		cout<<"Selecione a opcao:";
 
         cin >> optionM;        
-		if (optionM >= 0 && optionM <= 5) 
-              Beep(600, 150);
+		if (optionM >= 0 && optionM <= 5) Beep(600, 150);
             
 	}while(optionM > 5 || optionM  < 0);
 	
@@ -593,13 +755,9 @@ void CBatalha:: menu(){
 					cout << "========================================" << endl;
 					cout << "Selecione a opcao:";
 					cin >> option1;
-					if (option1 == 1) {
-					Beep(600, 150);
-						game();            }
-					else if (option1 == 0) {
-					Beep(600, 150);
-					return menu();
-															}
+
+					if (option1 == 1) {Beep(600, 150); game();}
+					else if (option1 == 0) { Beep(600, 150); menu();}
 						
 				}while (option1 > 1 || option1 < 0);
 				
