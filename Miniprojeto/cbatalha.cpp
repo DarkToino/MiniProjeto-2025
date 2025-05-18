@@ -76,8 +76,6 @@ CBatalha::CBatalha(){
 }
 
 void CBatalha::showTab(int tabIndex) {
-    char (*currentTab)[10][10] = (tabIndex == 1) ? gameTab1 : gameTab2;
-
     if (tabIndex == 1 || tabIndex == 2) {
         // Imprime a primeira parte da tabela (X-Z)
         cout << " ^" << endl;
@@ -85,7 +83,10 @@ void CBatalha::showTab(int tabIndex) {
         for (int i = 9; i >= 0; i--) {
             cout << i << "|";
             for (int j = 0; j < 10; j++) {
-                cout << currentTab[j][0][i] << "|";
+                if(tabIndex == 1)
+                    cout << tab1[j][0][i] << "|";
+                else 
+                    cout << tab2[j][0][i] << "|";
             }
             cout << endl;
         }
@@ -99,7 +100,10 @@ void CBatalha::showTab(int tabIndex) {
         for (int i = 9; i >= 0; i--) {
             cout << i << "|";
             for (int j = 0; j < 10; j++) {
-                cout << currentTab[j][i][0] << "|";
+                if(tabIndex == 1)
+                    cout << tab1[j][i][0] << "|"; 
+                else
+                    cout << tab2[j][i][0] << "|"; 
             }
             cout << endl;
         }
@@ -417,6 +421,9 @@ void CBatalha::showShipInstructions(int shipType) {
 bool CBatalha::isPlacementValid(int x, int y, int z, char direction, int shipSize, int tabIndex) {
     char (*currentTab)[10][10] = (tabIndex == 1) ? tab1 : tab2;
     
+    // Para caça 
+    if (shipSize == 1) {if (currentTab[x][y][z] != ' ') return false; else return true;}
+
     // Para nave-mãe (cubo 3x3x3)
     if (shipSize == 9) {
         // Verifica se cabe no tabuleiro
@@ -467,6 +474,9 @@ void CBatalha::placeShip(int x, int y, int z, char direction, int shipSize, int 
     //Em seguida, ela compara com a tabela 1 e 2 para saber qual é a tabela correta e com isso não é preciso usar "tabIndex" a toda a hora
     char (*currentTab)[10][10] = (tabIndex == 1) ? tab1 : tab2;
     
+    //Para caça
+    if (shipSize == 1) {currentTab[x][y][z] = shipType; return;}
+
     // Para nave-mãe (cubo 3x3x3)
     if (shipSize == 9) {
         for (int i = 0; i < 3; i++) {
@@ -535,6 +545,14 @@ void CBatalha::writeInTab(int type, int tabIndex) {
         y = (temp / 10) % 10;
         z = temp % 10;
         
+        //Para caça não precisa de direção
+        if (type == 1) {
+            if (isPlacementValid(x, y, z, ' ', shipSize, tabIndex)) {
+                placeShip(x, y, z, ' ', shipSize, tabIndex, shipType);
+                cout << "Caca colocada com sucesso!" << endl;
+                break;
+            }
+        }
         //Para nave-mãe não precisa de direção
         if (type == 5) {
             if (isPlacementValid(x, y, z, ' ', shipSize, tabIndex)) {
@@ -678,6 +696,7 @@ void CBatalha::shipSelection(){
 		cout << "Pressione ENTER para continuar...";
 		cin.ignore();
 		cin.get();
+        system ("cls");
 	}
 }
 
@@ -710,7 +729,7 @@ void CBatalha::game(){
 	}while (!verifyWin());
 }
 void CBatalha:: menu(){ 
-	int optionM, option1, option2, option3, option4, option0;
+	int optionM, option1, option2, option4, option0;
 	bool sair = false;
     space = false;
 
@@ -824,7 +843,7 @@ void CBatalha:: menu(){
 
                 menu();  
 
-                } while (true);  //fica o texto na tela ate ser imprmido o enter
+            } while (true);  //fica o texto na tela ate ser imprmido o enter
        
             
 			case 4:						
