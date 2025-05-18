@@ -23,6 +23,7 @@ class CBatalha{
 		char gameTab2[10][10][10];	//Jogadas do jogador 2
 
 		int plays = 0; //Numero de jogadas
+        bool space = false; //Configuração para ter 1 espaço entre as naves
 
 		//Jogadores 1 e 2 e seus nomes e pontuações
 		Player player1; 
@@ -75,6 +76,8 @@ CBatalha::CBatalha(){
 }
 
 void CBatalha::showTab(int tabIndex) {
+    char (*currentTab)[10][10] = (tabIndex == 1) ? gameTab1 : gameTab2;
+
     if (tabIndex == 1 || tabIndex == 2) {
         // Imprime a primeira parte da tabela (X-Z)
         cout << " ^" << endl;
@@ -82,10 +85,7 @@ void CBatalha::showTab(int tabIndex) {
         for (int i = 9; i >= 0; i--) {
             cout << i << "|";
             for (int j = 0; j < 10; j++) {
-                if(tabIndex == 1)
-                    cout << tab1[j][0][i] << "|";
-                else 
-                    cout << tab2[j][0][i] << "|";
+                cout << currentTab[j][0][i] << "|";
             }
             cout << endl;
         }
@@ -99,10 +99,7 @@ void CBatalha::showTab(int tabIndex) {
         for (int i = 9; i >= 0; i--) {
             cout << i << "|";
             for (int j = 0; j < 10; j++) {
-                if(tabIndex == 1)
-                    cout << tab1[j][i][0] << "|"; 
-                else
-                    cout << tab2[j][i][0] << "|"; 
+                cout << currentTab[j][i][0] << "|";
             }
             cout << endl;
         }
@@ -375,7 +372,7 @@ void CBatalha::axisSelect(char axis, int tabIndex){
     }    
 }
 
-void CBatalha:: showShipInstructions(int shipType) {
+void CBatalha::showShipInstructions(int shipType) {
     cout << "=== COLOCACAO DE NAVES ===" << endl;
     switch(shipType) {
         case 1:
@@ -417,7 +414,7 @@ void CBatalha:: showShipInstructions(int shipType) {
     cout << "==========================" << endl;
 }
 
-bool CBatalha:: isPlacementValid(int x, int y, int z, char direction, int shipSize, int tabIndex) {
+bool CBatalha::isPlacementValid(int x, int y, int z, char direction, int shipSize, int tabIndex) {
     char (*currentTab)[10][10] = (tabIndex == 1) ? tab1 : tab2;
     
     // Para nave-mãe (cubo 3x3x3)
@@ -465,7 +462,7 @@ bool CBatalha:: isPlacementValid(int x, int y, int z, char direction, int shipSi
     return true;
 }
 
-void CBatalha:: placeShip(int x, int y, int z, char direction, int shipSize, int tabIndex, char shipType) {
+void CBatalha::placeShip(int x, int y, int z, char direction, int shipSize, int tabIndex, char shipType) {
     //Esta linha é muito importante, ela cria um ponteiro apontado para a tabela atual
     //Em seguida, ela compara com a tabela 1 e 2 para saber qual é a tabela correta e com isso não é preciso usar "tabIndex" a toda a hora
     char (*currentTab)[10][10] = (tabIndex == 1) ? tab1 : tab2;
@@ -582,30 +579,26 @@ bool CBatalha::verifyWin(){
         cout << player1.name << " venceu!" << endl;
         
         // Salvar resultado no histórico
-        /*
         ofstream outFile("historico.txt", ios::app);
         if (outFile.is_open()) {
             time_t now = time(0);
-            char* dt = ctime(&now);
-            outFile << "Vencedor: " << player1.name << " vs " << player2.name << " - " << dt;
+            char* currentTime = ctime(&now);
+            outFile << "Vencedor: " << player1.name << " vs " << player2.name << " - " << currentTime << endl;
             outFile.close();
         }
-        */
         return true;
     }
     if (player2.score == 29) {
         cout << player2.name << " venceu!" << endl;
         
         // Salvar resultado no histórico
-        /*
         ofstream outFile("historico.txt", ios::app);
         if (outFile.is_open()) {
             time_t now = time(0);
-            char* dt = ctime(&now);
-            outFile << "Vencedor: " << player2.name << " vs " << player1.name << " - " << dt;
+            char* currentTime = ctime(&now);
+            outFile << "Vencedor: " << player2.name << " vs " << player1.name << " - " << currentTime << endl;
             outFile.close();
         }
-        */
         return true;
     }
     return false;
@@ -688,11 +681,15 @@ void CBatalha::shipSelection(){
 	}
 }
 
+/*
+bool CBatalha::spaceConfig(){
+    return true;
+}*/
 void CBatalha::game(){
 	srand(time(0));
 	int randomNum = (rand() % 2) + 1;
 	char axis;
-	plays = 0;		//numero de jogadas
+	plays = 0;		//Número de jogadas
 	shipSelection();
 
 	do{
@@ -713,8 +710,9 @@ void CBatalha::game(){
 	}while (!verifyWin());
 }
 void CBatalha:: menu(){ 
-	int optionM, option1, option3, option4, option0; //, option2
+	int optionM, option1, option2, option3, option4, option0;
 	bool sair = false;
+    space = false;
 
 	do{
 		system("cls");
@@ -753,7 +751,7 @@ void CBatalha:: menu(){
 					cout << "|   0. Nao                             |" << endl;
 					cout << "|                                      |" << endl;
 					cout << "========================================" << endl;
-					cout << "Selecione a opcao:";
+					cout << "Selecione uma opcao:";
 					cin >> option1;
 
 					if (option1 == 1) {Beep(600, 150); game();}
@@ -761,16 +759,25 @@ void CBatalha:: menu(){
 						
 				}while (option1 > 1 || option1 < 0);
 				
-			/*case 2:
+			case 2:
 				do{
 					system ("cls");
 					
 					cout << "========================================" << endl;
-					cout << "
-					cout << endl;
+					cout << "|            CONFIGURACOES             |" << endl;
+                    cout << "|                                      |" << endl;
+					cout << "|  1. Espaco entre naves               |" << endl;
+                    cout << "|                                      |" << endl;
+                    cout << "|  0. Sair                             |" << endl;
 					cout << "========================================" << endl;
-				}while();
-				*/
+                    cout << "Selecione uma opcao:";
+                    cin >> option2;
+
+                    if (option2 == 1) {Beep(600, 150); /*config();*/}
+                    else if (option0 == 0) {Beep(600, 150); menu();}
+
+				}while(option2 < 0 || option2 > 1);
+				
 			case 3: 
             do {
                 system("cls");
@@ -808,20 +815,16 @@ void CBatalha:: menu(){
                 cin.ignore(); 
 				cin.get();   
 				Beep(600, 150);
-				 ofstream outFile("historico.txt", ios::trunc);  //limpa o texto e reescreve oque guardou la em cima
-        if (outFile.is_open()) {												//faz com que a linha mais "antiga" desapareca
+				ofstream outFile("historico.txt", ios::trunc);  //limpa o texto e reescreve oque guardou la em cima
+                if (outFile.is_open()) {												//faz com que a linha mais "antiga" desapareca
            
-            for (int i = 0; i < total; i++) {					//imprime os 100 linhas
-                outFile << historico[i] << endl;			
-            }
-            outFile.close();
-        } else {
-            cout << "Nao foi possivel abrir o arquivo para reescrever." << endl;
-        }
+                for (int i = 0; i < total; i++) {outFile << historico[i] << endl;}		//imprime os 100 linhas
+                outFile.close();
+                } else {cout << "Nao foi possivel abrir o arquivo para reescrever." << endl;}
 
-        return menu();  
+                menu();  
 
-    } while (true);  //fica o texto na tela ate ser imprmido o enter
+                } while (true);  //fica o texto na tela ate ser imprmido o enter
        
             
 			case 4:						
