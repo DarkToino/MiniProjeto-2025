@@ -43,6 +43,7 @@ class CBatalha{
 		const char* BLUE = "\033[34m";
 		const char* MAGENTA = "\033[35m";
 		const char* RESET = "\033[0m";  //dá reset para a cor default
+		const char* corAtual = RESET;
 		
 	public:
 		
@@ -744,6 +745,7 @@ void CBatalha:: menu(){
 		cout << "| 3. Historico                           |" << endl;
 		cout << "| 4. Como Jogar                          |" << endl;
 		cout << "| 5. Musica                              |" << endl;
+		cout << "| 6. Cor                     	 	 |" << endl;
 		cout << "|                                        |" << endl;
 		cout << "|                                        |" << endl;
 		cout << "| 0. Sair                                |" << endl;
@@ -751,9 +753,9 @@ void CBatalha:: menu(){
 		cout<<"Selecione a opcao:";
 
         cin >> optionM;        
-		if (optionM >= 0 && optionM <= 5) Beep(600, 150);
+		if (optionM >= 0 && optionM <= 6) Beep(600, 150);
             
-	}while(optionM > 5 || optionM  < 0);
+	}while(optionM > 6 || optionM  < 0);
 	
 	do{
 		switch(optionM){
@@ -991,6 +993,43 @@ void CBatalha:: menu(){
     } while (optionMusic != 0); 
     return menu(); 
 
+case 6: {
+    int opcaoCor;
+    do {
+        system("cls");
+        cout << corAtual;	
+        cout << "==========================================" << endl;
+        cout << "|         ESCOLHER COR DO MENU          |" << endl;
+        cout << "==========================================" << endl;
+        cout << "| 1. Vermelho                           |" << endl;
+        cout << "| 2. Verde                              |" << endl;
+        cout << "| 3. Amarelo                            |" << endl;
+        cout << "| 4. Azul                               |" << endl;
+        cout << "| 5. Magenta                            |" << endl;
+        cout << "| 5. Reset(Branco)                      |" << endl;
+        cout << "|                         		|" << endl;
+        cout << "|                          		|" << endl;
+        cout << "| 0. Sair      		 	        |" << endl;
+        cout << "==========================================" << endl;
+        cout << "Escolha uma cor: ";
+        cin >> opcaoCor;
+        Beep(600, 150);
+
+        switch (opcaoCor) {
+            case 1: corAtual = RED; break;
+            case 2: corAtual = GREEN; break;
+            case 3: corAtual = YELLOW; break;
+            case 4: corAtual = BLUE; break;
+            case 5: corAtual = MAGENTA; break;
+            case 6: corAtual = RESET;break;
+            case 0: return menu(); // voltar
+         
+        }
+
+    } while (opcaoCor < 0 || opcaoCor > 6);
+
+    break; // volta ao menu principal
+}
     
 			case 0:							//criar uma opção se ainda houver um jogo aberto
 				do{
