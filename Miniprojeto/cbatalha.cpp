@@ -32,16 +32,24 @@ class CBatalha{
 		//cores para as diferentes naves (https://dev.to/tenry/terminal-colors-in-c-c-3dgc)
 		//A -> Caças, B -> Fragatas, C -> Contratorpedeiros, D -> Cruzador, E -> Nave-mãe
 		string A[4], B[3], C[2], D[1], E[1];
+
+        //Cores para as naves
+        const char* A_color = "\033[32m"; //Verde
+        const char* B_color = "\033[33m"; //Amarelo
+        const char* C_color = "\033[34m"; //Azul
+        const char* D_color = "\033[35m"; //Magenta
+        const char* E_color = "\033[36m"; //Cyan
 		
 		const int tableWidth = 25;  
     	const int spacing = 15;      
 		
-
+        //Cores para o menu
 		const char* RED = "\033[31m";
 		const char* GREEN = "\033[32m";
 		const char* YELLOW = "\033[33m";  
 		const char* BLUE = "\033[34m";
 		const char* MAGENTA = "\033[35m";
+        const char* CYAN = "\033[36m";
 		const char* RESET = "\033[0m";  //dá reset para a cor default
 		const char* corAtual = RESET;
 		
@@ -223,6 +231,8 @@ void CBatalha::showTab(int tabIndex) {
 void CBatalha::axisSelect(char axis, int tabIndex){
     char (*currentTab)[10][10] = (tabIndex == 1) ? gameTab1 : gameTab2;
     int firstDigit, secondDigit, temp;
+    bool hit = false;
+
     switch(axis){
         case 'X':
         case 'x':
@@ -248,24 +258,21 @@ void CBatalha::axisSelect(char axis, int tabIndex){
                 if (tabIndex == 1){
                     if (tab1[i][firstDigit][secondDigit] != ' '){
                         gameTab1[i][firstDigit][secondDigit] = 'X';
-                        cout << "Foi atinjida uma nave inimiga!" << endl;
+                        hit = true;
                     }
-                    else {
-                        gameTab1[i][firstDigit][secondDigit] = 'o';
-                        cout << "Nada foi atinjido" << endl;
-                    }
+                    else {gameTab1[i][firstDigit][secondDigit] = 'o';}
                 }
                 else{
                     if (tab2[i][firstDigit][secondDigit] != ' '){
                         gameTab2[i][firstDigit][secondDigit] = 'X';
-                        cout << "Foi atinjida uma nave inimiga!" << endl;
+                        hit = true;
                     }
-                    else {
-                        gameTab2[i][firstDigit][secondDigit] = 'o';
-                        cout << "Nada foi atinjido" << endl;
-                    }
+                    else {gameTab2[i][firstDigit][secondDigit] = 'o';}
                 }
             }
+            if (hit) {cout << "Foi atinjida uma nave inimiga!" << endl;}
+            else {cout << "Nada foi atinjido" << endl;}
+
             cout << "Press ENTER para continuar..." << endl;
             cin.ignore();
             cin.get();
@@ -296,24 +303,21 @@ void CBatalha::axisSelect(char axis, int tabIndex){
                 if (tabIndex == 1){
                     if (tab1[firstDigit][i][secondDigit] != ' '){
                         gameTab1[firstDigit][i][secondDigit] = 'X';
-                        cout << "Foi atinjida uma nave inimiga!" << endl;
+                        hit = true;
                     }
-                    else {
-                        gameTab1[firstDigit][i][secondDigit] = 'o';
-                        cout << "Nada foi atinjido" << endl;
-                    }
+                    else {gameTab1[firstDigit][i][secondDigit] = 'o';}
                 }
                 else {
                     if (tab2[firstDigit][i][secondDigit] != ' '){
                         gameTab2[firstDigit][i][secondDigit] = 'X';
-                        cout << "Foi atinjida uma nave inimiga!" << endl;
+                        hit = true;
                     }
-                    else {
-                        gameTab2[firstDigit][i][secondDigit] = 'o';
-                        cout << "Nada foi atinjido" << endl;
-                    }
+                    else {gameTab2[firstDigit][i][secondDigit] = 'o';}
                 }
             }
+            if (hit) {cout << "Foi atinjida uma nave inimiga!" << endl;}
+            else {cout << "Nada foi atinjido" << endl;}
+
             cout << "Press ENTER para continuar..." << endl;
             cin.ignore();
             cin.get();
@@ -344,24 +348,21 @@ void CBatalha::axisSelect(char axis, int tabIndex){
                 if (tabIndex == 1){
                     if (tab1[firstDigit][secondDigit][i] != ' '){
                         gameTab1[firstDigit][secondDigit][i] = 'X';
-                        cout << "Foi atinjida uma nave inimiga!" << endl;
+                        hit = true;
                     }
-                    else {
-                        gameTab1[firstDigit][secondDigit][i] = 'o';
-                        cout << "Nada foi atinjido" << endl;
-                    }
+                    else {gameTab1[firstDigit][secondDigit][i] = 'o';}
                 }
                 else {
                     if (tab2[firstDigit][secondDigit][i] != ' '){
                         gameTab2[firstDigit][secondDigit][i] = 'X';
-                        cout << "Foi atinjida uma nave inimiga!" << endl;
+                        hit = true;
                     }
-                    else {
-                        gameTab2[firstDigit][secondDigit][i] = 'o';
-                        cout << "Nada foi atinjido" << endl;
-                    }
+                    else {gameTab2[firstDigit][secondDigit][i] = 'o';}
                 }
             }
+            if (hit) {cout << "Foi atinjida uma nave inimiga!" << endl;}
+            else {cout << "Nada foi atinjido" << endl;}
+
             cout << "Press ENTER para continuar..." << endl;
             cin.ignore();
             cin.get();
@@ -745,7 +746,7 @@ void CBatalha:: menu(){
 		cout << "| 3. Historico                           |" << endl;
 		cout << "| 4. Como Jogar                          |" << endl;
 		cout << "| 5. Musica                              |" << endl;
-		cout << "| 6. Cor                     	 	 |" << endl;
+		cout << "| 6. Cor                     	 	      |" << endl;
 		cout << "|                                        |" << endl;
 		cout << "|                                        |" << endl;
 		cout << "| 0. Sair                                |" << endl;
@@ -775,8 +776,8 @@ void CBatalha:: menu(){
 					cout << "Selecione uma opcao:";
 					cin >> option1;
 
-					if (option1 == 1) {Beep(600, 150); game();}
-					else if (option1 == 0) { Beep(600, 150); menu();}
+					if (option1 == 1) {Beep(600, 150); cout << RESET; game();}
+					else if (option1 == 0) {Beep(600, 150); menu();}
 						
 				}while (option1 > 1 || option1 < 0);
 				
@@ -998,19 +999,22 @@ case 6: {
     do {
         system("cls");
         cout << corAtual;	
-        cout << "==========================================" << endl;
-        cout << "|         ESCOLHER COR DO MENU          |" << endl;
-        cout << "==========================================" << endl;
-        cout << "| 1. Vermelho                           |" << endl;
-        cout << "| 2. Verde                              |" << endl;
-        cout << "| 3. Amarelo                            |" << endl;
-        cout << "| 4. Azul                               |" << endl;
-        cout << "| 5. Magenta                            |" << endl;
-        cout << "| 5. Reset(Branco)                      |" << endl;
-        cout << "|                         		|" << endl;
-        cout << "|                          		|" << endl;
-        cout << "| 0. Sair      		 	        |" << endl;
-        cout << "==========================================" << endl;
+        cout << "========================================" << endl;
+        cout << "|         ESCOLHER COR DO MENU         |" << endl;
+        cout << "========================================" << endl;
+        cout << "|      Atencao, as naves tem cores     |" << endl;
+        cout << "|             predefinidas!            |" << endl; 
+        cout << "|                          		    |" << endl;       
+        cout << "| 1. Vermelho                          |" << endl;
+        cout << "| 2. Verde                             |" << endl;
+        cout << "| 3. Amarelo                           |" << endl;
+        cout << "| 4. Azul                              |" << endl;
+        cout << "| 5. Magenta                           |" << endl;
+        cout << "| 6. Ciano                             |" << endl;
+        cout << "| 7. Reset(Branco)                     |" << endl;
+        cout << "|                         		        |" << endl;
+        cout << "| 0. Sair      		 	            |" << endl;
+        cout << "========================================" << endl;
         cout << "Escolha uma cor: ";
         cin >> opcaoCor;
         Beep(600, 150);
@@ -1021,7 +1025,8 @@ case 6: {
             case 3: corAtual = YELLOW; break;
             case 4: corAtual = BLUE; break;
             case 5: corAtual = MAGENTA; break;
-            case 6: corAtual = RESET;break;
+            case 6: corAtual = CYAN; break;
+            case 7: corAtual = RESET;break;
             case 0: return menu(); // voltar
          
         }
