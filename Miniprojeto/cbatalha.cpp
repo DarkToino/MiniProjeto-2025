@@ -9,6 +9,7 @@
 using namespace std;
 
 const unsigned int MAX_NAME_LENGTH = 10;
+const int MAX = 100;
 
 struct Player {
     int score = 0;
@@ -23,7 +24,8 @@ class CBatalha{
 		char gameTab2[10][10][10];	//Jogadas do jogador 2
 
 		int plays = 0; //Numero de jogadas
-        bool space = false; //Configuração para ter 1 espaço entre as naves
+        bool needSpace = false; //Configuração para ter 1 espaço entre as naves
+        bool randomShip = false;
 
 		//Jogadores 1 e 2 e seus nomes e pontuações
 		Player player1; 
@@ -67,7 +69,6 @@ class CBatalha{
 		bool isPlacementValid(int x, int y, int z, char direction, int shipSize, int tabIndex);
 		void placeShip(int x, int y, int z, char direction, int shipSize, int tabIndex, char shipType);
 		void showShipInstructions(int shipType);
-	
 };
 
 CBatalha::CBatalha(){
@@ -119,6 +120,23 @@ void CBatalha::showTab(int tabIndex) {
         cout << " +---------------------->" << endl;
         cout << " |0|1|2|3|4|5|6|7|8|9|  X" << endl;
         cout << endl;
+
+        // Imprime a terceira parte da tabela (Y-Z)
+        cout << " ^" << endl;
+        cout << "Y|____________________" << endl;
+        for (int i = 9; i >= 0; i--) {
+            cout << i << "|";
+            for (int j = 0; j < 10; j++) {
+                if(tabIndex == 1)
+                    cout << tab1[0][i][j] << "|"; 
+                else
+                    cout << tab2[0][i][j] << "|"; 
+            }
+            cout << endl;
+        }
+        cout << " +---------------------->" << endl;
+        cout << " |0|1|2|3|4|5|6|7|8|9|  Z" << endl;
+        cout << endl;
     }
 
     if (tabIndex == 3) {
@@ -152,7 +170,12 @@ void CBatalha::showTab(int tabIndex) {
 			//Imprime primeira tabela por linhas
             cout << left << i << "|";
             for (int j = 0; j < 10; j++)
-                cout << gameTab1[j][0][i] << "|";
+                if (gameTab1[j][0][i] == 'A') {cout << A_color << gameTab1[j][0][i] << "|";}
+                else if (gameTab1[j][0][i] == 'B') {cout << B_color << gameTab1[j][0][i] << "|";}
+                else if (gameTab1[j][0][i] == 'C') {cout << C_color << gameTab1[j][0][i] << "|";}
+                else if (gameTab1[j][0][i] == 'D') {cout << D_color << gameTab1[j][0][i] << "|";}
+                else if (gameTab1[j][0][i] == 'E') {cout << E_color << gameTab1[j][0][i] << "|";}
+                else {cout << gameTab1[j][0][i] << "|";}
             
 			//Escreve o espaço livre entre os números e o verdadeiro fim da tabela
             int leftSize = 3 + 20;
@@ -166,7 +189,12 @@ void CBatalha::showTab(int tabIndex) {
 			//Imprime segunda tabela por linhas
             cout << i << "|";
             for (int j = 0; j < 10; j++) 
-                cout << gameTab2[j][0][i] << "|";
+                if (gameTab2[j][0][i] == 'A') {cout << A_color << gameTab2[j][0][i] << "|";}
+                else if (gameTab2[j][0][i] == 'B') {cout << B_color << gameTab2[j][0][i] << "|";}
+                else if (gameTab2[j][0][i] == 'C') {cout << C_color << gameTab2[j][0][i] << "|";}
+                else if (gameTab2[j][0][i] == 'D') {cout << D_color << gameTab2[j][0][i] << "|";}
+                else if (gameTab2[j][0][i] == 'E') {cout << E_color << gameTab2[j][0][i] << "|";}
+                else {cout << gameTab2[j][0][i] << "|";}
 
             cout << endl;
         }
@@ -198,7 +226,12 @@ void CBatalha::showTab(int tabIndex) {
 			//Imprime primeira tabela por linhas
             cout << left << i << "|";
             for (int j = 0; j < 10; j++) 
-                cout << gameTab1[0][j][i] << "|";
+                if (gameTab1[j][i][0] == 'A') {cout << A_color << gameTab1[j][i][0] << "|";}
+                else if (gameTab1[j][i][0] == 'B') {cout << B_color << gameTab1[j][i][0] << "|";}
+                else if (gameTab1[j][i][0] == 'C') {cout << C_color << gameTab1[j][i][0] << "|";}
+                else if (gameTab1[j][i][0] == 'D') {cout << D_color << gameTab1[j][i][0] << "|";}
+                else if (gameTab1[j][i][0] == 'E') {cout << E_color << gameTab1[j][i][0] << "|";}
+                else {cout << gameTab1[j][i][0] << "|";}
             
 			//Escreve o espaço livre entre os números e o verdadeiro fim da tabela
             int leftSize = 3 + 20; 
@@ -212,7 +245,12 @@ void CBatalha::showTab(int tabIndex) {
 			//Imprime segunda tabela por linhas
             cout << i << "|";
             for (int j = 0; j < 10; j++) 
-                cout << gameTab2[0][j][i] << "|";
+                if (gameTab2[j][i][0] == 'A') {cout << A_color << gameTab2[j][i][0] << "|";}
+                else if (gameTab2[j][i][0] == 'B') {cout << B_color << gameTab2[j][i][0] << "|";}
+                else if (gameTab2[j][i][0] == 'C') {cout << C_color << gameTab2[j][i][0] << "|";}
+                else if (gameTab2[j][i][0] == 'D') {cout << D_color << gameTab2[j][i][0] << "|";}
+                else if (gameTab2[j][i][0] == 'E') {cout << E_color << gameTab2[j][i][0] << "|";}
+                else {cout << gameTab2[j][i][0] << "|";}
     
             cout << endl;
         }
@@ -225,6 +263,57 @@ void CBatalha::showTab(int tabIndex) {
         cout << left << setw(tableWidth) << " |0|1|2|3|4|5|6|7|8|9|  X";
         cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
         cout << " |0|1|2|3|4|5|6|7|8|9|  X" << endl;
+
+        //Terceiro (Y-Z)
+        cout << left << setw(tableWidth) << " ^";
+        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+        cout << " ^" << endl;
+        
+        cout << left << setw(tableWidth) << "Y|____________________";
+        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+        cout << "Y|____________________" << endl;
+
+        for (int i = 9; i >= 0; i--) {
+			//Imprime primeira tabela por linhas
+            cout << left << i << "|";
+            for (int j = 0; j < 10; j++) 
+                if (gameTab1[0][i][j] == 'A') {cout << A_color << gameTab1[0][i][j] << "|";}
+                else if (gameTab1[0][i][j] == 'B') {cout << B_color << gameTab1[0][i][j] << "|";}
+                else if (gameTab1[0][i][j] == 'C') {cout << C_color << gameTab1[0][i][j] << "|";}
+                else if (gameTab1[0][i][j] == 'D') {cout << D_color << gameTab1[0][i][j] << "|";}
+                else if (gameTab1[0][i][j] == 'E') {cout << E_color << gameTab1[0][i][j] << "|";}
+                else {cout << gameTab1[0][i][j] << "|";}
+            
+			//Escreve o espaço livre entre os números e o verdadeiro fim da tabela
+            int leftSize = 3 + 20; 
+            if (leftSize < tableWidth) {
+                cout << setw(tableWidth - leftSize + 1) << " ";
+            }
+            
+            //Linha no meio
+            cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+            
+			//Imprime segunda tabela por linhas
+            cout << i << "|";
+            for (int j = 0; j < 10; j++) 
+                if (gameTab2[0][i][j] == 'A') {cout << A_color << gameTab2[0][i][j] << "|";}
+                else if (gameTab2[0][i][j] == 'B') {cout << B_color << gameTab2[0][i][j] << "|";}
+                else if (gameTab2[0][i][j] == 'C') {cout << C_color << gameTab2[0][i][j] << "|";}
+                else if (gameTab2[0][i][j] == 'D') {cout << D_color << gameTab2[0][i][j] << "|";}
+                else if (gameTab2[0][i][j] == 'E') {cout << E_color << gameTab2[0][i][j] << "|";}
+                else {cout << gameTab2[0][i][j] << "|";}
+    
+            cout << endl;
+        }
+		
+		//Imprime segunda parte das tabelas (finalizar a tabela)
+        cout << left << setw(tableWidth) << " +---------------------->";
+        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+        cout << " +---------------------->" << endl;
+        
+        cout << left << setw(tableWidth) << " |0|1|2|3|4|5|6|7|8|9|  Z";
+        cout << setw(spacing) << " " << "|" << setw(spacing) << " ";
+        cout << " |0|1|2|3|4|5|6|7|8|9|  Z" << endl;
     }
 }
 
@@ -574,13 +663,14 @@ void CBatalha::writeInTab(int type, int tabIndex) {
                 cout << shipNames[type] << " colocado com sucesso!" << endl;
                 break;
             } 
-            else {cout << "Posicao invalida! Verifique se ha espaco suficiente e nao ha sobreposicao." << endl;}
+            else {
+                cout << "Posicao invalida! Verifique se ha espaco suficiente e nao ha sobreposicao." << endl;
+                cout << "Pressione ENTER para continuar...";
+                cin.ignore();
+                cin.get();
+            }
         }
     } while (true);
-    
-    cout << "Pressione ENTER para continuar...";
-    cin.ignore();
-    cin.get();
 }
 
 bool CBatalha::verifyWin(){
@@ -702,10 +792,6 @@ void CBatalha::shipSelection(){
 	}
 }
 
-/*
-bool CBatalha::spaceConfig(){
-    return true;
-}*/
 void CBatalha::game(){
 	srand(time(0));
 	int randomNum = (rand() % 2) + 1;
@@ -719,7 +805,7 @@ void CBatalha::game(){
 		if (randomNum == 1){	//Vez do jogador 1
 			cout << player1.name << " e a tua vez de jogar! Escolhe um eixo para lancar o disparo" << endl;
 		}
-		if (randomNum == 2){	//Vez do jogador 2
+		else if (randomNum == 2){	//Vez do jogador 2
 			cout << player2.name << " e a tua vez de jogar! Escolhe um eixo para lancar o disparo" << endl;
 		}
 	
@@ -727,355 +813,344 @@ void CBatalha::game(){
 
 	axisSelect(axis, randomNum);
 		if (randomNum == 1) randomNum++;
-		if (randomNum == 2) randomNum--;
+		else if (randomNum == 2) randomNum--;
 	}while (!verifyWin());
 }
-void CBatalha:: menu(){ 
-	int optionM, option1, option2, option4, option0;
-	bool sair = false;
-    space = false;
 
-	do{
-		system("cls");
-		
-		cout << "==========================================" << endl;
-		cout << "|             MENU PRINCIPAL             |" << endl;
-		cout << "==========================================" << endl;
-		cout << "| 1. Iniciar Novo Jogo                   |" << endl;
-		cout << "| 2. Configuracoes                       |" << endl;
-		cout << "| 3. Historico                           |" << endl;
-		cout << "| 4. Como Jogar                          |" << endl;
-		cout << "| 5. Musica                              |" << endl;
-		cout << "| 6. Cor                     	 	      |" << endl;
-		cout << "|                                        |" << endl;
-		cout << "|                                        |" << endl;
-		cout << "| 0. Sair                                |" << endl;
-		cout << "==========================================" << endl;
-		cout<<"Selecione a opcao:";
+void CBatalha::menu() { 
+    int optionM, option1, option2, option4, option0;
+    bool sair = false;
+
+    do {
+        system("cls");
+        
+        cout << "==========================================" << endl;
+        cout << "|             MENU PRINCIPAL             |" << endl;
+        cout << "==========================================" << endl;
+        cout << "| 1. Iniciar Novo Jogo                   |" << endl;
+        cout << "| 2. Configuracoes                       |" << endl;
+        cout << "| 3. Historico                           |" << endl;
+        cout << "| 4. Como Jogar                          |" << endl;
+        cout << "| 5. Musica                              |" << endl;
+        cout << "| 6. Cor                                 |" << endl;
+        cout << "|                                        |" << endl;
+        cout << "|                                        |" << endl;
+        cout << "| 0. Sair                                |" << endl;
+        cout << "==========================================" << endl;
+        cout << "Selecione a opcao:";
 
         cin >> optionM;        
-		if (optionM >= 0 && optionM <= 6) Beep(600, 150);
+        if (optionM >= 0 && optionM <= 6) {Beep(600, 150); break;}
             
-	}while(optionM > 6 || optionM  < 0);
-	
-	do{
-		switch(optionM){
-			case 1:
-				do{
-					system("cls");
-					
-					cout << "========================================" << endl;
-					cout << "|              NOVO JOGO               |" << endl;
-					cout << "========================================" << endl;
-					cout << "|   Comecar novo jogo?                 |" << endl;
-					cout << "|                                      |" << endl;
-					cout << "|   1. Sim                             |" << endl;
-					cout << "|   0. Nao                             |" << endl;
-					cout << "|                                      |" << endl;
-					cout << "========================================" << endl;
-					cout << "Selecione uma opcao:";
-					cin >> option1;
+    } while (true);
+    
+    do {
+        switch (optionM) {
+            case 1:
+                do {
+                    system("cls");
+                    
+                    cout << "==========================================" << endl;
+                    cout << "|               NOVO JOGO                |" << endl;
+                    cout << "==========================================" << endl;
+                    cout << "|   Comecar novo jogo?                   |" << endl;
+                    cout << "|                                        |" << endl;
+                    cout << "|   1. Sim                               |" << endl;
+                    cout << "|   0. Nao                               |" << endl;
+                    cout << "|                                        |" << endl;
+                    cout << "==========================================" << endl;
+                    cout << "Selecione uma opcao:";
+                    cin >> option1;
 
-					if (option1 == 1) {Beep(600, 150); cout << RESET; game();}
-					else if (option1 == 0) {Beep(600, 150); menu();}
-						
-				}while (option1 > 1 || option1 < 0);
-				
-			case 2:
-				do{
-					system ("cls");
-					
-					cout << "========================================" << endl;
-					cout << "|            CONFIGURACOES             |" << endl;
-                    cout << "|                                      |" << endl;
-					cout << "|  1. Espaco entre naves               |" << endl;
-                    cout << "|                                      |" << endl;
-                    cout << "|  0. Sair                             |" << endl;
-					cout << "========================================" << endl;
+                    if (option1 == 1) {Beep(600, 150); cout << RESET; game();}
+                    if (option1 == 0) {Beep(600, 150); menu();}
+                        
+                } while (true);
+                
+            case 2:
+                do {
+                    system("cls");
+                    
+                    cout << "==========================================" << endl;
+                    cout << "|             CONFIGURACOES              |" << endl;
+                    cout << "|                                        |" << endl;
+                    cout << "|  1. Espaco entre naves                 |" << endl;
+                    cout << "|                                        |" << endl;
+                    cout << "|  0. Sair                               |" << endl;
+                    cout << "|                                        |" << endl;
+                    cout << "==========================================" << endl;
                     cout << "Selecione uma opcao:";
                     cin >> option2;
 
-                    if (option2 == 1) {Beep(600, 150); /*config();*/}
-                    else if (option0 == 0) {Beep(600, 150); menu();}
+                    if (option2 == 1) {
+                        Beep(600, 150); 
 
-				}while(option2 < 0 || option2 > 1);
-				
-			case 3: 
-            do {
-                system("cls");
-                cout << "==========================================" << endl;
-                cout << "|           HISTORICO DOS JOGOS          |" << endl;
-                cout << "==========================================" << endl;
-                cout << "|  Mostrando os ultimos 100 jogos...     |" << endl;
-                cout << "==========================================" << endl;
+                        if (needSpace == false) {needSpace = true; cout << "Agora as naves precisam de pelo menos 1 espaco entre elas!" << endl;}
+                        else {needSpace = false; cout << "Agora as naves nao precisam de espaco entre elas!" << endl;}
+                    } else {Beep(600, 150); return menu();}
 
-                const int MAX = 20; 				//meti os 20 para ser mais facil testar (depois podes mudar isto para variável global fora de tudo mesmo no inicio)
-                string historico[MAX];  
-                int total = 0;
+                } while (true);
+                
+            case 3: 
+                do {
+                    system("cls");
+                    cout << "==========================================" << endl;
+                    cout << "|           HISTORICO DOS JOGOS          |" << endl;
+                    cout << "==========================================" << endl;
+                    cout << "|  Mostrando os ultimos 100 jogos...     |" << endl;
+                    cout << "==========================================" << endl;
 
-               
-                ifstream inFile("historico.txt");
-                if (inFile.is_open()) {
-                    while (total < MAX && getline(inFile, historico[total])) {			//abre ficheiro para leitura das 100 linhas se nao der da erro
-                        total++;
+                    string historico[MAX];  
+                    int total = 0;
+
+                   
+                    ifstream inFile("historico.txt");
+                    if (inFile.is_open()) { //abre ficheiro para leitura das 100 linhas se nao der da erro
+                        while (total < MAX && getline(inFile, historico[total])) {total++;}
+                        inFile.close();  
+                    } else {cout << "Nao foi possivel abrir o arquivo de historico." << endl;}
+
+                    for (int i = 0; i < total; i++) {
+                        cout << "| " << left << setw(38) << historico[i] << " |" << endl; //escreve todas as linhas do ficheiro txt
                     }
-                    inFile.close();  
-                } else {
-                    cout << "Nao foi possivel abrir o arquivo de historico." << endl;
-                }
 
+                    cout << endl;
+                    cout << "==========================================" << endl;
+                    cout << "| Pressione ENTER para voltar ao menu    |" << endl;
+                    cout << "==========================================" << endl;
+
+                    cin.ignore(); 
+                    cin.get();   
+                    Beep(600, 150);
+
+                    ofstream outFile("historico.txt", ios::trunc);  //limpa o texto e reescreve oque guardou la em cima
+                    if (outFile.is_open()) { //faz com que a linha mais "antiga" desapareca
                
-                for (int i = 0; i < total; i++) {
-                    cout << historico[i] << endl; 							//escreve todas as linhas do ficheiro txt
-                }
+                        for (int i = 0; i < total; i++) {outFile << historico[i] << endl;} //imprime os 100 linhas
+                        outFile.close();
+                    } else {cout << "Nao foi possivel abrir o arquivo para reescrever." << endl;}
 
-                cout << endl;
-                cout << "==========================================" << endl;
-                cout << "| Pressione ENTER para voltar ao menu    |" << endl;
-                cout << "==========================================" << endl;
-
-                cin.ignore(); 
-				cin.get();   
-				Beep(600, 150);
-				ofstream outFile("historico.txt", ios::trunc);  //limpa o texto e reescreve oque guardou la em cima
-                if (outFile.is_open()) {												//faz com que a linha mais "antiga" desapareca
+                    return menu();  
+                } while (true);  //fica o texto na tela ate ser imprmido o enter
            
-                for (int i = 0; i < total; i++) {outFile << historico[i] << endl;}		//imprime os 100 linhas
-                outFile.close();
-                } else {cout << "Nao foi possivel abrir o arquivo para reescrever." << endl;}
+                
+            case 4:                        
+                do {
+                    system("cls");
+                    
+                    cout << "==========================================" << endl;
+                    cout << "|               COMO JOGAR               |" << endl;
+                    cout << "==========================================" << endl;
+                    cout << "|  Escolher a linguagem de preferencia:  |" << endl;
+                    cout << "|                                        |" << endl;
+                    cout << "|  1. Portugues                          |" << endl;
+                    cout << "|  2. Ingles                             |" << endl;
+                    cout << "|  3. Espanhol                           |" << endl;
+                    cout << "|                                        |" << endl;
+                    cout << "|  0. Sair                               |" << endl;
+                    cout << "|                                        |" << endl;
+                    cout << "==========================================" << endl;
+                    cout << "Selecione uma opcao:";
 
-                menu();  
+                    cin >> option4;
+                    Beep(600, 150);
 
-            } while (true);  //fica o texto na tela ate ser imprmido o enter
-       
+                    if (option4 == 1) {
+                        system("cls");
+                        Beep(600, 150);
+                        cout << "==========================================" << endl;
+                        cout << "|               COMO JOGAR               |" << endl;
+                        cout << "========================================" << endl;
+                        cout << "|  Batalha Naval 3D  um jogo por turnos  |" << endl;
+                        cout << "|  onde o objetivo e afundar todos os    |" << endl;
+                        cout << "|  navios do inimigo. O jogo ocorre em   |" << endl;
+                        cout << "|  um espaco 3D.                         |" << endl;
+                        cout << "|                                        |" << endl;
+                        cout << "|  REGRAS:                               |" << endl;
+                        cout << "|  - Posicione seus navios no espaco.    |" << endl;
+                        cout << "|  - Em cada turno, informe 3 coords.    |" << endl;
+                        cout << "|    Exemplo: 2 5 3 (x,y,z)              |" << endl;
+                        cout << "|  - O jogador e informado se acertou    |" << endl;
+                        cout << "|     acertou ou errou 		          |" << endl;
+                        cout << "|  - Vence quem afundar todos os navios  |"<< endl;
+                        cout << "|    do oponente primeiro.               |" << endl;
+                        cout << "|                                        |" << endl;
+                        cout << "==========================================" << endl;
+                        cout << "|   Pressione ENTER para voltar ao menu  |" << endl;
+                        cout << "==========================================" << endl;
+
+                        cin.ignore(); // limpa o enter anterior
+                        cin.get();    // espera que o utilizador digite qualquer tecla
+                        Beep(600, 150);
+                        return menu(); 
+                    }
+                    
+                    if (option4 == 2) {
+                        system("cls");
+                        Beep(600, 150);
+                        cout << "==========================================" << endl;
+                        cout << "|               HOW TO PLAY              |" << endl;
+                        cout << "==========================================" << endl;
+                        cout << "|  3D Battleship is a turn-based game    |" << endl;
+                        cout << "|  where the goal is to sink all the     |" << endl;
+                        cout << "|  enemy's ships. The game takes place   |" << endl;
+                        cout << "|  in a 3D space.                        |" << endl;
+                        cout << "|                                        |" << endl;
+                        cout << "|  RULES:                                |" << endl;
+                        cout << "|  - Position your ships in the space.   |" << endl;
+                        cout << "|  - In each turn provide 3 coordinates  |" << endl;
+                        cout << "|    Example: 2 5 3 (x, y, z)            |" << endl;
+                        cout << "|  - The player is informed if they hit  |" << endl;
+                        cout << "|    or miss        	 	              |" << endl;
+                        cout << "|  - The winner is the one who sinks     |" << endl;
+                        cout << "|    all the opponent's ships first.     |" << endl;
+                        cout << "|                                        |" << endl;
+                        cout << "==========================================" << endl;
+                        cout << "|   Press ENTER to return to the menu    |" << endl;
+                        cout << "==========================================" << endl;
+                        cin.ignore(); // limpa o enter anterior
+                        cin.get();    // espera que o utilizador digite qualquer tecla
+                        Beep(600, 150);
+                        return menu(); 
+                    }
+                    
+                    if (option4 == 3) {
+                        system("cls");
+                        Beep(600, 150);
+                        cout << "==========================================" << endl;
+                        cout << "|              COMO JUGAR                |" << endl;
+                        cout << "==========================================" << endl;
+                        cout << "|  Batalla Naval 3D es un juego por      |" << endl;
+                        cout << "|  turnos cuyo objetivo es hundir todos  |" << endl;
+                        cout << "|  los barcos enemigos. El juego se      |" << endl;
+                        cout << "|  desarrolla en un espacio 3D.          |" << endl;
+                        cout << "|                                        |" << endl;
+                        cout << "|  REGLAS:                               |" << endl;
+                        cout << "|  - Coloca tus barcos en el espacio.    |" << endl;
+                        cout << "|  - En cada turno, ingresa 3 coords.    |" << endl;
+                        cout << "|    Ejemplo: 2 5 3 (x, y, z)            |" << endl;
+                        cout << "|  - Se informa si acertaste o fallaste  |" << endl;
+                        cout << "|  - Gana el primero en hundir todos     |" << endl;
+                        cout << "|    los barcos del oponente.            |" << endl;
+                        cout << "|                                        |" << endl;
+                        cout << "==========================================" << endl;
+                        cout << "|   Presiona ENTER para volver al menu   |" << endl;
+                        cout << "==========================================" << endl;
+
+                        cin.ignore();
+                        cin.get();    
+                        Beep(600, 150);
+                        return menu(); 
+                    }
+                    
+                    if (option4 == 0) {Beep(600, 150); return menu();}
+                } while (true);
             
-			case 4:						
-				do{
-					system("cls");
-					
-					cout << "========================================" << endl;
-					cout << "|              COMO JOGAR              |" << endl;
-					cout << "========================================" << endl;
-					cout << "|  Escolher a linguagem de preferencia:|" << endl;
-					cout << "|                                      |" << endl;
-					cout << "|  1. Portugues                        |" << endl;
-					cout << "|  2. Ingles                           |" << endl;
-					cout << "|  3. Espanhol                         |" << endl;
-					cout << "|                                      |" << endl;
-					cout << "|  0. Sair                             |" << endl;
-					cout << "|                                      |" << endl;
-					cout << "========================================" << endl;
-					cout << "Selecione uma opcao:";
+            case 5: {
+                int optionMusic;
+                do {
+                    system("cls");
+                    cout << "==========================================" << endl;
+                    cout << "|             MENU DE MUSICA             |" << endl;
+                    cout << "==========================================" << endl;
+                    cout << "|  Deseja ligar ou desligar a musica?    |" << endl;
+                    cout << "|                                        |" << endl;
+                    cout << "|  1. Ligar musica                       |" << endl;
+                    cout << "|  2. Desligar musica                    |" << endl;
+                    cout << "|                                        |" << endl;  
+                    cout << "|  0. Sair                               |" << endl;
+                    cout << "|                                        |" << endl;
+                    cout << "==========================================" << endl;
+                    cout << "Selecione uma opcao: ";
+                    cin >> optionMusic;
+                    Beep(600, 150);
+                    
+                    if (optionMusic == 1) {PlaySound("undertale.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);}  //ativa a musica ou repete
+                    if (optionMusic == 2) {PlaySound(NULL, NULL, 0);}  // para a musica
+                    if (optionMusic == 0) {return menu();} // volta para menu com a musica se estiver ligado
+                } while (true); 
+            }
 
-					
-					cin >> option4;
-					Beep(600, 150);
-				if (option4 == 1) {
+            case 6: {
+                int opcaoCor;
+                do {
+                    system("cls");
+                    cout << corAtual;    
+                    cout << "==========================================" << endl;
+                    cout << "|          ESCOLHER COR DO MENU          |" << endl;
+                    cout << "==========================================" << endl;
+                    cout << "|      Atencao, as naves tem cores       |" << endl;
+                    cout << "|             predefinidas!              |" << endl; 
+                    cout << "|                                        |" << endl;       
+                    cout << "| 1. Vermelho                            |" << endl;
+                    cout << "| 2. Verde                               |" << endl;
+                    cout << "| 3. Amarelo                             |" << endl;
+                    cout << "| 4. Azul                                |" << endl;
+                    cout << "| 5. Magenta                             |" << endl;
+                    cout << "| 6. Ciano                               |" << endl;
+                    cout << "| 7. Reset(Branco)                       |" << endl;
+                    cout << "|                                        |" << endl;
+                    cout << "| 0. Sair                                |" << endl;
+                    cout << "|                                        |" << endl;  
+                    cout << "==========================================" << endl;
+                    cout << "Escolha uma cor: ";
+                    cin >> opcaoCor;
+                    Beep(600, 150);
+
+                    switch (opcaoCor) {
+                        case 1: corAtual = RED; break;
+                        case 2: corAtual = GREEN; break;
+                        case 3: corAtual = YELLOW; break;
+                        case 4: corAtual = BLUE; break;
+                        case 5: corAtual = MAGENTA; break;
+                        case 6: corAtual = CYAN; break;
+                        case 7: corAtual = RESET; break;
+                        case 0: return menu();
+                    }
+                } while (true);
+            }
+            
+            case 0: // criar uma opção se ainda houver um jogo aberto
+                do {
+                    system("cls");
+                    
+                    cout << "==========================================" << endl;
+                    cout << "|                 SAIR                   |" << endl;
+                    cout << "==========================================" << endl;
+                    cout << "|  Tem certeza?                          |" << endl;
+                    cout << "|                                        |" << endl;
+                    cout << "|  1. Sim                                |" << endl;
+                    cout << "|  0. Nao                                |" << endl;
+                    cout << "|                                        |" << endl;
+                    cout << "==========================================" << endl;
+                    cout << "Selecione uma opcao:";
+
+                    
+                    cin >> option0;
+                    Beep(600, 150);
+
+                    if (option0 == 1) {
+                        system("cls");
+                        
+                        cout << "==========================================" << endl;
+                        cout << "|                                        |" << endl;
+                        cout << "|              A ENCERRAR...             |" << endl;
+                        cout << "|                                        |" << endl;
+                        cout << "==========================================" << endl;
+
+                        sair = true;
+                        break;
+                    }
+                    
+                    if (option0 == 0) return menu();
+                    break;
+                    
+                } while(true);
+                break;
+                
             system("cls");
-            Beep(600, 150);
-        cout << "========================================" << endl;
-		cout << "|              COMO JOGAR              |" << endl;
-		cout << "========================================" << endl;
-		cout << "|  Batalha Naval 3D  um jogo por turnos|" << endl;
-		cout << "|  onde o objetivo e afundar todos os  |" << endl;
-		cout << "|  navios do inimigo. O jogo ocorre em |" << endl;
-		cout << "|  um espaco 3D.                       |" << endl;
-		cout << "|                                      |" << endl;
-		cout << "|  REGRAS:                             |" << endl;
-		cout << "|  - Posicione seus navios no espaco.  |" << endl;
-		cout << "|  - Em cada turno, informe 3 coords.  |" << endl;
-		cout << "|    Exemplo: 2 5 3 (x,y,z)            |" << endl;
-		cout << "|  - O jogador e informado se acertou  |" << endl;
-		cout << "|     acertou ou errou 		        |" << endl;
-		cout << "|  - Vence quem afundar todos os navios|"<< endl;
-		cout << "|    do oponente primeiro.             |" << endl;
-		cout << "|                                      |" << endl;
-		cout << "========================================" << endl;
-		cout << "| Pressione ENTER para voltar ao menu  |" << endl;
-		cout << "========================================" << endl;
-
-            cin.ignore(); // limpa o enter anterior
-            cin.get();    // espera que o utilizador digite qualquer tecla
-            Beep(600, 150);
-            return menu(); 
-        }
-					
-					if (option4 == 2){
-				system("cls");
-				Beep(600, 150);
-		cout << "========================================" << endl;
-		cout << "|               HOW TO PLAY            |" << endl;
-		cout << "========================================" << endl;
-		cout << "|  3D Battleship is a turn-based game  |" << endl;
-		cout << "|  where the goal is to sink all the   |" << endl;
-		cout << "|  enemy's ships. The game takes place |" << endl;
-		cout << "|  in a 3D space.                      |" << endl;
-		cout << "|                                      |" << endl;
-		cout << "|  RULES:                              |" << endl;
-		cout << "|  - Position your ships in the space. |" << endl;
-		cout << "|  - In each turn provide 3 coordinates|" << endl;
-		cout << "|    Example: 2 5 3 (x, y, z)          |" << endl;
-		cout << "|  - The player is informed if they hit|" << endl;
-		cout << "|    or miss        	 	            |" << endl;
-		cout << "|  - The winner is the one who sinks   |" << endl;
-		cout << "|    all the opponent's ships first.   |" << endl;
-		cout << "|                                      |" << endl;
-		cout << "========================================" << endl;
-		cout << "| Press ENTER to return to the menu    |" << endl;
-		cout << "========================================" << endl;
-			cin.ignore(); // limpa o enter anterior
-            cin.get();    // espera que o utilizador digite qualquer tecla
-            Beep(600, 150);
-            return menu(); 
-					}
-					if (option4 == 3){
-				system("cls");
-				Beep(600, 150);
-	cout << "========================================" << endl;
-	cout << "|            COMO JUGAR                |" << endl;
-	cout << "========================================" << endl;
-	cout << "|  Batalla Naval 3D es un juego por    |" << endl;
-	cout << "|  turnos cuyo objetivo es hundir todos|" << endl;
-	cout << "|  los barcos enemigos. El juego se    |" << endl;
-	cout << "|  desarrolla en un espacio 3D.        |" << endl;
-	cout << "|                                      |" << endl;
-	cout << "|  REGLAS:                             |" << endl;
-	cout << "|  - Coloca tus barcos en el espacio.  |" << endl;
-	cout << "|  - En cada turno, ingresa 3 coords.  |" << endl;
-	cout << "|    Ejemplo: 2 5 3 (x, y, z)          |" << endl;
-	cout << "|  - Se informa si acertaste o fallaste|" << endl;
-	cout << "|  - Gana el primero en hundir todos   |" << endl;
-	cout << "|    los barcos del oponente.          |" << endl;
-	cout << "|                                      |" << endl;
-	cout << "========================================" << endl;
-	cout << "| Presiona ENTER para volver al menu   |" << endl;
-	cout << "========================================" << endl;
-
-			cin.ignore();
-            cin.get();    
-            Beep(600, 150);
-            return menu(); 
-					}
-					
-					if (option4 == 0)
-						Beep(600, 150);
-					 menu();
-					
-				}while (option4 >2 || option4 < 0);
-			
-			case 5: 
-    int optionMusic;
-    do {
-        system("cls");
-        cout << "========================================" << endl;
-        cout << "|            MENU DE MUSICA            |" << endl;
-        cout << "========================================" << endl;
-        cout << "|  Deseja ligar ou desligar a musica?  |" << endl;
-        cout << "|                                      |" << endl;
-        cout << "|  1. Ligar musica                     |" << endl;
-        cout << "|  2. Desligar musica                  |" << endl;
-        cout << "|  0. Sair                             |" << endl;
-        cout << "|                                      |" << endl;
-        cout << "========================================" << endl;
-        cout << "Selecione uma opcao: ";
-        cin >> optionMusic;
-        Beep(600, 150);
-        
-           if (optionMusic == 1) {
-            PlaySound("undertale.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP); //ativa a musica ou repete																																								
-        }
-        if (optionMusic == 2) {
-            PlaySound(NULL, NULL, 0);  // para a musica
-        }
-        if (optionMusic == 0) {          // volta para menu com a musica se estiver ligado
-            break;  
-        }
-
-    } while (optionMusic != 0); 
-    return menu(); 
-
-case 6: {
-    int opcaoCor;
-    do {
-        system("cls");
-        cout << corAtual;	
-        cout << "========================================" << endl;
-        cout << "|         ESCOLHER COR DO MENU         |" << endl;
-        cout << "========================================" << endl;
-        cout << "|      Atencao, as naves tem cores     |" << endl;
-        cout << "|             predefinidas!            |" << endl; 
-        cout << "|                          		    |" << endl;       
-        cout << "| 1. Vermelho                          |" << endl;
-        cout << "| 2. Verde                             |" << endl;
-        cout << "| 3. Amarelo                           |" << endl;
-        cout << "| 4. Azul                              |" << endl;
-        cout << "| 5. Magenta                           |" << endl;
-        cout << "| 6. Ciano                             |" << endl;
-        cout << "| 7. Reset(Branco)                     |" << endl;
-        cout << "|                         		        |" << endl;
-        cout << "| 0. Sair      		 	            |" << endl;
-        cout << "========================================" << endl;
-        cout << "Escolha uma cor: ";
-        cin >> opcaoCor;
-        Beep(600, 150);
-
-        switch (opcaoCor) {
-            case 1: corAtual = RED; break;
-            case 2: corAtual = GREEN; break;
-            case 3: corAtual = YELLOW; break;
-            case 4: corAtual = BLUE; break;
-            case 5: corAtual = MAGENTA; break;
-            case 6: corAtual = CYAN; break;
-            case 7: corAtual = RESET;break;
-            case 0: return menu(); // voltar
-         
-        }
-
-    } while (opcaoCor < 0 || opcaoCor > 6);
-
-    break; // volta ao menu principal
-}
-    
-			case 0:							//criar uma opção se ainda houver um jogo aberto
-				do{
-					system("cls");
-					
-					cout << "========================================" << endl;
-					cout << "|                SAIR                  |" << endl;
-					cout << "========================================" << endl;
-					cout << "|  Tem certeza?                        |" << endl;
-					cout << "|                                      |" << endl;
-					cout << "|  1. Sim                              |" << endl;
-					cout << "|  0. Nao                              |" << endl;
-					cout << "|                                      |" << endl;
-					cout << "========================================" << endl;
-					cout << "Selecione uma opcao:";
-
-					
-					cin >> option0;
-					Beep(600, 150);
-					if (option0 == 1){
-						system("cls");
-						
-						cout << "========================================" << endl;
-						cout << "|                                      |" << endl;
-						cout << "|             A ENCERRAR...            |" << endl;
-						cout << "|                                      |" << endl;
-						cout << "========================================" << endl;
-
-						sair = true;
-						break;
-					}
-					
-					if (option0 == 0) menu();
-					break;
-					
-				}while(option0 > 1 || option0 < 0);
-				break;
-				
-		system("cls");
-		}	
-	}while(!sair);
+        }    
+    } while(!sair);
 }
 
 int main() {
