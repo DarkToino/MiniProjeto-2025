@@ -25,7 +25,7 @@ class CBatalha{
 
 		int plays = 0; //Numero de jogadas
         bool needSpace = false; //Configuração para ter 1 espaço entre as naves
-        bool randomShip = false;
+        int randomShip = 2;
 
 		//Jogadores 1 e 2 e seus nomes e pontuações
 		Player player1; 
@@ -63,7 +63,7 @@ class CBatalha{
 		void shipSelection();
 		void showTab(int);
 		void axisSelect(char, int);
-		void writeInTab(int, int);
+		void writeInTab(int, int, int);
 		bool verifyWin();
 		void game();
 		bool isPlacementValid(int x, int y, int z, char direction, int shipSize, int tabIndex);
@@ -603,7 +603,7 @@ void CBatalha::placeShip(int x, int y, int z, char direction, int shipSize, int 
     }
 }
 
-void CBatalha::writeInTab(int type, int tabIndex) {
+void CBatalha::writeInTab(int type, int tabIndex, int randomShip) {
     int temp, x, y, z;
     char direction = ' ';
     int shipSize;
@@ -621,21 +621,25 @@ void CBatalha::writeInTab(int type, int tabIndex) {
         default: return;
     }
     
-    showShipInstructions(type);
+    if (randomShip == 2) showShipInstructions(type);
     
     do {
-        cout << "Insira as coordenadas para colocar o " << shipNames[type] << " (ex. 000): ";
-        cin >> temp;
+        if (randomShip == 2){
+            cout << "Insira as coordenadas para colocar o " << shipNames[type] << " (ex. 000): ";
+            cin >> temp;
         
-        if (temp > 999 || temp < 0) {
-            cout << "O valor deve estar entre 0 e 999!" << endl;
-            continue;
+            if (temp > 999 || temp < 0) {
+                cout << "O valor deve estar entre 0 e 999!" << endl;
+                continue;
+            }
+        
+            x = temp / 100;
+            y = (temp / 10) % 10;
+            z = temp % 10;
         }
-        
-        x = temp / 100;
-        y = (temp / 10) % 10;
-        z = temp % 10;
-        
+        else {
+            
+        }
         //Para caça não precisa de direção
         if (type == 1) {
             if (isPlacementValid(x, y, z, ' ', shipSize, tabIndex)) {
@@ -742,53 +746,65 @@ void CBatalha::shipSelection(){
 		
 		system ("cls");
 		
-		// Colocar 4 caças
-		for (int i = 0; i < 4; i++){
-			cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
-			cout << "Colocando caca " << (i + 1) << " de 4" << endl;
-			showTab(j);
-			writeInTab(1, j);
-			system ("cls");
-		}
-		
-		// Colocar 3 fragatas
-		for (int i = 0; i < 3; i++){
-			cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
-			cout << "Colocando fragata " << (i + 1) << " de 3" << endl;
-			showTab(j);
-			writeInTab(2, j);
-			system ("cls");
-		}
-		
-		// Colocar 2 contratorpedeiros
-		for (int i = 0; i < 2; i++){
-			cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
-			cout << "Colocando contratorpedeiro " << (i + 1) << " de 2" << endl;
-			showTab(j);
-			writeInTab(3, j);
-			system ("cls");	
-		}
-		
-		// Colocar 1 cruzador
-		cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
-		cout << "Colocando cruzador" << endl;
-		showTab(j);
-		writeInTab(4, j);
-		system ("cls");	
-		
-		// Colocar 1 nave-mãe
-		cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
-		cout << "Colocando nave-mae" << endl;
-		showTab(j);
-		writeInTab(5, j);
-		system ("cls");
-		
-		cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
-		cout << "Todas as naves foram colocadas!" << endl;
-		cout << "Pressione ENTER para continuar...";
-		cin.ignore();
-		cin.get();
-        system ("cls");
+        do {
+            cout << "Deseja colocar as naves de forma:" << endl;
+            cout << "1 - Aleatória" << endl;
+            cout << "2 - Manual" << endl;
+            cin >> randomShip;
+        } while (randomShip != 1 && randomShip != 2);
+
+        if (randomShip == 2){
+            // Colocar 4 caças
+            for (int i = 0; i < 4; i++){
+                cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
+                cout << "Colocando caca " << (i + 1) << " de 4" << endl;
+                showTab(j);
+                writeInTab(1, j, randomShip);
+                system ("cls");
+            }
+            
+            // Colocar 3 fragatas
+            for (int i = 0; i < 3; i++){
+                cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
+                cout << "Colocando fragata " << (i + 1) << " de 3" << endl;
+                showTab(j);
+                writeInTab(2, j, randomShip);
+                system ("cls");
+            }
+            
+            // Colocar 2 contratorpedeiros
+            for (int i = 0; i < 2; i++){
+                cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
+                cout << "Colocando contratorpedeiro " << (i + 1) << " de 2" << endl;
+                showTab(j);
+                writeInTab(3, j, randomShip);
+                system ("cls");	
+            }
+            
+            // Colocar 1 cruzador
+            cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
+            cout << "Colocando cruzador" << endl;
+            showTab(j);
+            writeInTab(4, j, randomShip);
+            system ("cls");	
+            
+            // Colocar 1 nave-mãe
+            cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
+            cout << "Colocando nave-mae" << endl;
+            showTab(j);
+            writeInTab(5, j, randomShip);
+            system ("cls");
+            
+            cout << "Jogador: " << (j == 1 ? player1.name : player2.name) << endl;
+            cout << "Todas as naves foram colocadas!" << endl;
+            cout << "Pressione ENTER para continuar...";
+            cin.ignore();
+            cin.get();
+            system ("cls");
+        }
+        else {
+
+        }
 	}
 }
 
