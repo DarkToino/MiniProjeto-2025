@@ -511,55 +511,107 @@ void CBatalha::showShipInstructions(int shipType) {
 
 bool CBatalha::isPlacementValid(int x, int y, int z, char direction, int shipSize, int tabIndex) {
     char (*currentTab)[10][10] = (tabIndex == 1) ? tab1 : tab2;
-    
-    // Para caça 
-    if (shipSize == 1) {if (currentTab[x][y][z] != ' ') return false; else return true;}
 
-    // Para nave-mãe (cubo 3x3x3)
+    // Caça
+    if (shipSize == 1) {
+        if (currentTab[x][y][z] != ' ') return false;
+
+        if (needSpace) {
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {								//ve a area ao redor
+                    for (int dz = -1; dz <= 1; dz++) {
+                        int nx = x + dx, ny = y + dy, nz = z + dz;
+                        if (nx >= 0 && nx < 10 && ny >= 0 && ny < 10 && nz >= 0 && nz < 10) {
+                            if (currentTab[nx][ny][nz] != ' ') return false;
+                        }
+                    }
+                }																	//a area ao redor e vazia
+            }
+        }
+        return true;
+    }
+
+    // nave mae
     if (shipSize == 9) {
-        // Verifica se cabe no tabuleiro
-        if (x + 2 >= 10 || y + 2 >= 10 || z + 2 >= 10) return false;
-        
-        // Verifica se não há sobreposição
+        if (x + 2 >= 10 || y + 2 >= 10 || z + 2 >= 10) return false;			//verifica se o cubo esta no limite
+
         for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < 3; j++) {										//verifica se ao redor esta vazio
                 for (int k = 0; k < 3; k++) {
                     if (currentTab[x + i][y + j][z + k] != ' ') return false;
+                }
+            }																//espaco ao redor vazio
+        }
+
+        if (needSpace) {
+            for (int i = -1; i <= 3; i++) {
+                for (int j = -1; j <= 3; j++) {
+                    for (int k = -1; k <= 3; k++) {
+                        int nx = x + i, ny = y + j, nz = z + k;
+                        if (nx >= 0 && nx < 10 && ny >= 0 && ny < 10 && nz >= 0 && nz < 10) {
+                           
+                            if (i >= 0 && i < 3 && j >= 0 && j < 3 && k >= 0 && k < 3) continue;  // Ignora as próprias células da nave
+                            if (currentTab[nx][ny][nz] != ' ') return false;
+                        }
+                    }
                 }
             }
         }
         return true;
     }
-    
-    // Para outras naves (linha)
-    switch(direction) {
-        case 'X':
-        case 'x':
-            if (x + shipSize > 10) return false;
-            for (int i = 0; i < shipSize; i++) {
-                if (currentTab[x + i][y][z] != ' ') return false;   //Não permite colocar a nave se ela sair do tabuleiro
-            }
-            break;
-        case 'Y':
-        case 'y':
-            if (y + shipSize > 10) return false;
-            for (int i = 0; i < shipSize; i++) {
-                if (currentTab[x][y + i][z] != ' ') return false;   //Não permite colocar a nave se ela sair do tabuleiro
-            }
-            break;
-        case 'Z':
-        case 'z':
-            if (z + shipSize > 10) return false;
-            for (int i = 0; i < shipSize; i++) {
-                if (currentTab[x][y][z + i] != ' ') return false;   //Não permite colocar a nave se ela sair do tabuleiro
-            }
-            break;
-        default:
-            return false;
+
+    // Outras naves em linha (X, Y, Z)
+    int dx = 0, dy = 0, dz = 0;
+    switch (direction) {
+        case 'X': case 'x': dx = 1; break;
+        case 'Y': case 'y': dy = 1; break;
+        case 'Z': case 'z': dz = 1; break;
+        default: return false;
     }
+
+    int endX = x + dx * (shipSize - 1);
+    int endY = y + dy * (shipSize - 1);
+    int endZ = z + dz * (shipSize - 1);
+
+    if (endX >= 10 || endY >= 10 || endZ >= 10) return false;
+
+    for (int i = 0; i < shipSize; i++) {
+        int nx = x + dx * i;
+        int ny = y + dy * i;
+        int nz = z + dz * i;
+        if (currentTab[nx][ny][nz] != ' ') return false;
+    }
+
+    if (needSpace) {
+		//verifica o espaco a redor da linha da nave
+        for (int i = -1; i <= shipSize; i++) {
+            for (int j = -1; j <= 1; j++) {
+                for (int k = -1; k <= 1; k++) {
+																														//coordenadas  ao redor da linha
+                    int nx = x + dx * i + dy * j + dz * k;
+                    int ny = y + dy * i + dx * j + dz * k;
+                    int nz = z + dz * i + dx * k + dy * j;
+
+                    if (nx >= 0 && nx < 10 && ny >= 0 && ny < 10 && nz >= 0 && nz < 10) { // Ignora a propria nave
+                        
+                        bool dentro = false;
+                        for (int s = 0; s < shipSize; s++) {
+                            if (nx == x + dx * s && ny == y + dy * s && nz == z + dz * s) {
+                                dentro = true;
+                                break;
+                            }
+                        }
+                        if (dentro) continue;
+
+                        if (currentTab[nx][ny][nz] != ' ') return false;			//Celula coupada
+                    }
+                }
+            }
+        }
+    }
+
     return true;
 }
-
 void CBatalha::placeShip(int x, int y, int z, char direction, int shipSize, int tabIndex, char shipType) {
     //Esta linha é muito importante, ela cria um ponteiro apontado para a tabela atual
     //Em seguida, ela compara com a tabela 1 e 2 para saber qual é a tabela correta e com isso não é preciso usar "tabIndex" a toda a hora
@@ -748,7 +800,7 @@ void CBatalha::shipSelection(){
 		
         do {
             cout << "Deseja colocar as naves de forma:" << endl;
-            cout << "1 - Aleatória" << endl;
+            cout << "1 - Aleatoria" << endl;
             cout << "2 - Manual" << endl;
             cin >> randomShip;
         } while (randomShip != 1 && randomShip != 2);
