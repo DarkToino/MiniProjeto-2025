@@ -326,6 +326,7 @@ void CBatalha::axisSelect(char axis, int tabIndex){
     char (*currentTab)[10][10] = (tabIndex == 1) ? gameTab1 : gameTab2;
     int firstDigit, secondDigit, temp;
     bool hit = false;
+    const char* shipNames[] = {"", "Caca", "Fragata", "Contratorpedeiro", "Cruzador", "Nave-mae"};
 
     switch(axis){
         case 'X':
@@ -350,21 +351,23 @@ void CBatalha::axisSelect(char axis, int tabIndex){
         
             for (int i = 0; i < 10; i++){
                 if (tabIndex == 1){
-                    if (tab1[i][firstDigit][secondDigit] != ' '){
-                        gameTab1[i][firstDigit][secondDigit] = 'X';
-                        hit = true;
-                    }
+                    if (tab1[i][firstDigit][secondDigit] == 'A') {gameTab1[i][firstDigit][secondDigit] = 'X'; hit = true; temp = 1;}
+                    if (tab1[i][firstDigit][secondDigit] == 'B') {gameTab1[i][firstDigit][secondDigit] = 'X'; hit = true; temp = 2;}
+                    if (tab1[i][firstDigit][secondDigit] == 'C') {gameTab1[i][firstDigit][secondDigit] = 'X'; hit = true; temp = 3;}
+                    if (tab1[i][firstDigit][secondDigit] == 'D') {gameTab1[i][firstDigit][secondDigit] = 'X'; hit = true; temp = 4;}
+                    if (tab1[i][firstDigit][secondDigit] == 'E') {gameTab1[i][firstDigit][secondDigit] = 'X'; hit = true; temp = 5;}
                     else {gameTab1[i][firstDigit][secondDigit] = 'o';}
                 }
                 else{
-                    if (tab2[i][firstDigit][secondDigit] != ' '){
-                        gameTab2[i][firstDigit][secondDigit] = 'X';
-                        hit = true;
-                    }
+                    if (tab2[i][firstDigit][secondDigit] == 'A') {gameTab2[i][firstDigit][secondDigit] = 'X'; hit = true; temp = 1;}
+                    if (tab2[i][firstDigit][secondDigit] == 'B') {gameTab2[i][firstDigit][secondDigit] = 'X'; hit = true; temp = 2;}
+                    if (tab2[i][firstDigit][secondDigit] == 'C') {gameTab2[i][firstDigit][secondDigit] = 'X'; hit = true; temp = 3;}
+                    if (tab2[i][firstDigit][secondDigit] == 'D') {gameTab2[i][firstDigit][secondDigit] = 'X'; hit = true; temp = 4;}
+                    if (tab2[i][firstDigit][secondDigit] == 'E') {gameTab2[i][firstDigit][secondDigit] = 'X'; hit = true; temp = 5;}
                     else {gameTab2[i][firstDigit][secondDigit] = 'o';}
                 }
             }
-            if (hit) {cout << "Foi atinjida uma nave inimiga!" << endl;}
+            if (hit) {cout << "Foi atinjida uma "<< shipNames[temp] << " inimiga!" << endl;}
             else {cout << "Nada foi atinjido" << endl;}
 
             cout << "Press ENTER para continuar..." << endl;
@@ -395,21 +398,23 @@ void CBatalha::axisSelect(char axis, int tabIndex){
 
             for (int i = 0; i < 10; i++){
                 if (tabIndex == 1){
-                    if (tab1[firstDigit][i][secondDigit] != ' '){
-                        gameTab1[firstDigit][i][secondDigit] = 'X';
-                        hit = true;
-                    }
+                    if (tab1[firstDigit][i][secondDigit] == 'A') {gameTab1[firstDigit][i][secondDigit] = 'X'; hit = true; temp = 1;}
+                    if (tab1[firstDigit][i][secondDigit] == 'B') {gameTab1[firstDigit][i][secondDigit] = 'X'; hit = true; temp = 2;}
+                    if (tab1[firstDigit][i][secondDigit] == 'C') {gameTab1[firstDigit][i][secondDigit] = 'X'; hit = true; temp = 3;}
+                    if (tab1[firstDigit][i][secondDigit] == 'D') {gameTab1[firstDigit][i][secondDigit] = 'X'; hit = true; temp = 4;}
+                    if (tab1[firstDigit][i][secondDigit] == 'E') {gameTab1[firstDigit][i][secondDigit] = 'X'; hit = true; temp = 5;}
                     else {gameTab1[firstDigit][i][secondDigit] = 'o';}
                 }
                 else {
-                    if (tab2[firstDigit][i][secondDigit] != ' '){
-                        gameTab2[firstDigit][i][secondDigit] = 'X';
-                        hit = true;
-                    }
+                    if (tab2[firstDigit][i][secondDigit] == 'A') {gameTab2[firstDigit][i][secondDigit] = 'X'; hit = true; temp = 1;}
+                    if (tab2[firstDigit][i][secondDigit] == 'B') {gameTab2[firstDigit][i][secondDigit] = 'X'; hit = true; temp = 2;}
+                    if (tab2[firstDigit][i][secondDigit] == 'C') {gameTab2[firstDigit][i][secondDigit] = 'X'; hit = true; temp = 3;}
+                    if (tab2[firstDigit][i][secondDigit] == 'D') {gameTab2[firstDigit][i][secondDigit] = 'X'; hit = true; temp = 4;}
+                    if (tab2[firstDigit][i][secondDigit] == 'E') {gameTab2[firstDigit][i][secondDigit] = 'X'; hit = true; temp = 5;}
                     else {gameTab2[firstDigit][i][secondDigit] = 'o';}
                 }
             }
-            if (hit) {cout << "Foi atinjida uma nave inimiga!" << endl;}
+            if (hit) {cout << "Foi atinjida uma "<< shipNames[temp] << " inimiga!" << endl;}
             else {cout << "Nada foi atinjido" << endl;}
 
             cout << "Press ENTER para continuar..." << endl;
@@ -440,21 +445,23 @@ void CBatalha::axisSelect(char axis, int tabIndex){
 
             for (int i = 0; i < 10; i++){
                 if (tabIndex == 1){
-                    if (tab1[firstDigit][secondDigit][i] != ' '){
-                        gameTab1[firstDigit][secondDigit][i] = 'X';
-                        hit = true;
-                    }
+                    if (tab1[firstDigit][secondDigit][i] == 'A') {gameTab1[firstDigit][secondDigit][i] = 'X'; hit = true; temp = 1;}
+                    if (tab1[firstDigit][secondDigit][i] == 'B') {gameTab1[firstDigit][secondDigit][i] = 'X'; hit = true; temp = 2;}
+                    if (tab1[firstDigit][secondDigit][i] == 'C') {gameTab1[firstDigit][secondDigit][i] = 'X'; hit = true; temp = 3;}
+                    if (tab1[firstDigit][secondDigit][i] == 'D') {gameTab1[firstDigit][secondDigit][i] = 'X'; hit = true; temp = 4;}
+                    if (tab1[firstDigit][secondDigit][i] == 'E') {gameTab1[firstDigit][secondDigit][i] = 'X'; hit = true; temp = 5;}
                     else {gameTab1[firstDigit][secondDigit][i] = 'o';}
                 }
                 else {
-                    if (tab2[firstDigit][secondDigit][i] != ' '){
-                        gameTab2[firstDigit][secondDigit][i] = 'X';
-                        hit = true;
-                    }
+                    if (tab2[firstDigit][secondDigit][i] == 'A') {gameTab2[firstDigit][secondDigit][i] = 'X'; hit = true; temp = 1;}
+                    if (tab2[firstDigit][secondDigit][i] == 'B') {gameTab2[firstDigit][secondDigit][i] = 'X'; hit = true; temp = 2;}
+                    if (tab2[firstDigit][secondDigit][i] == 'C') {gameTab2[firstDigit][secondDigit][i] = 'X'; hit = true; temp = 3;}
+                    if (tab2[firstDigit][secondDigit][i] == 'D') {gameTab2[firstDigit][secondDigit][i] = 'X'; hit = true; temp = 4;}
+                    if (tab2[firstDigit][secondDigit][i] == 'E') {gameTab2[firstDigit][secondDigit][i] = 'X'; hit = true; temp = 5;}
                     else {gameTab2[firstDigit][secondDigit][i] = 'o';}
                 }
             }
-            if (hit) {cout << "Foi atinjida uma nave inimiga!" << endl;}
+            if (hit) {cout << "Foi atinjida uma "<< shipNames[temp] << " inimiga!" << endl;}
             else {cout << "Nada foi atinjido" << endl;}
 
             cout << "Press ENTER para continuar..." << endl;
@@ -940,11 +947,12 @@ void CBatalha::game(){
 			cout << player2.name << " e a tua vez de jogar! Escolhe um eixo para lancar o disparo" << endl;
 		}
 	
-	cin >> axis;
+	    cin >> axis;
+    
+        if (randomNum == 1) randomNum++;
+	    else {if (randomNum == 2) randomNum--;}
+	    axisSelect(axis, randomNum);
 
-	axisSelect(axis, randomNum);
-		if (randomNum == 1) randomNum++;
-		else if (randomNum == 2) randomNum--;
 	}while (!verifyWin());
 }
 
