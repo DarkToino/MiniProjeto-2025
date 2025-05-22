@@ -9,6 +9,8 @@
 #include "cbatalha.h" 
 using namespace std;
 
+//g++ -std=c++11 main.cpp CBatalha.cpp -o game.exe -lwinmm
+
 CBatalha::CBatalha() {
 	//inicializar jogo vazio
 	for (int i = 0; i < 10; i++){
@@ -711,6 +713,40 @@ void CBatalha::writeInTab2(int type, int tabIndex) {
     } while (true);
 }
 
+void CBatalha::pcGameplay() {
+    int temp, x, y;
+    bool hit = false, played = false;
+    const char* shipNames[] = {"", "Caca", "Fragata", "Contratorpedeiro", "Cruzador", "Nave-mae"};
+
+    do {
+        srand(time(0));
+        temp = rand() % 100;
+
+        x = temp / 10;
+        y = temp % 10;
+
+        for (int i = 0; i < 10; i++){
+            char cellValue = tab1[x][y][i];
+                
+            if (cellValue == 'o') break;
+            else if (cellValue == 'A') {tab1[x][y][i] = 'X'; hit = true; played = true; temp = 1;}
+            else if (cellValue == 'B') {tab1[x][y][i] = 'X'; hit = true; played = true; temp = 2;}
+            else if (cellValue == 'C') {tab1[x][y][i] = 'X'; hit = true; played = true; temp = 3;}
+            else if (cellValue == 'D') {tab1[x][y][i] = 'X'; hit = true; played = true; temp = 4;}
+            else if (cellValue == 'E') {tab1[x][y][i] = 'X'; hit = true; played = true; temp = 5;}
+            else {tab1[x][y][i] = 'o'; played = true;}
+        }
+            
+        if (hit) {cout << "Foi atinjida uma "<< shipNames[temp] << " inimiga!" << endl;}
+        else {cout << "Nada foi atinjido" << endl;}
+
+        cout << "Press ENTER para continuar..." << endl;
+        cin.ignore();
+        cin.get();
+        system("cls");
+    } while (!played); 
+}
+
 bool CBatalha::verifyWin(){
 	player1.score = player2.score = 0;
 	for (int i = 0; i < 10; i++){
@@ -767,7 +803,7 @@ void CBatalha::shipSelection(){
 
 			cin >> player1.name;
 		}
-		else {
+		else if (j == 2){
 			cout << "========================================" << endl;
 			cout << "|                                      |" << endl;
 			cout << "|   Insira o nome do segundo jogador   |" << endl;
@@ -780,14 +816,17 @@ void CBatalha::shipSelection(){
 		
 		system ("cls");
 		
-        do {
-            cout << "Deseja colocar as naves de forma:" << endl;
-            cout << "1 - Aleatoria" << endl;
-            cout << "2 - Manual" << endl;
-            cin >> randomShip;
+        if (j == 2 && pcGame == true) {randomShip = 1;}
+        else {
+            do {
+                cout << "Deseja colocar as naves de forma:" << endl;
+                cout << "1 - Aleatoria" << endl;
+                cout << "2 - Manual" << endl;
+                cin >> randomShip;
 
-            system ("cls");
-        } while (randomShip != 1 && randomShip != 2);
+                system ("cls");
+            } while (randomShip != 1 && randomShip != 2);
+        }
 
         if (randomShip == 2){
             // Colocar 4 caças
@@ -862,19 +901,24 @@ void CBatalha::game(){
 	shipSelection();
 
 	do{
+        if (randomNum == 1) randomNum = 2;
+	    else {randomNum = 1;}
+
 		plays++;
 		showTab(3);	
 		if (randomNum == 1){	//Vez do jogador 1
 			cout << player1.name << " e a tua vez de jogar! Escolhe um eixo para lancar o disparo" << endl;
 		}
-		else {	//Vez do jogador 2
-			cout << player2.name << " e a tua vez de jogar! Escolhe um eixo para lancar o disparo" << endl;
+		else if (pcGame && randomNum == 2) {	//Vez do jogador 2 (pc)
+			pcGameplay();
+            continue;
 		}
-	
+        else {	//Vez do jogador 2 (humano)
+            cout << player2.name << " e a tua vez de jogar! Escolhe um eixo para lancar o disparo" << endl;
+        }
+
 	    cin >> axis;
     
-        if (randomNum == 1) randomNum = 2;
-	    else {randomNum = 1;}
 	    axisSelect(axis, randomNum);
 
 	}while (!verifyWin());
@@ -918,13 +962,15 @@ void CBatalha::menu() {
                     cout << "|   Comecar novo jogo?                   |" << endl;
                     cout << "|                                        |" << endl;
                     cout << "|   1. Sim                               |" << endl;
+                    cout << "|   2. Sim, contra o computador          |" << endl;
                     cout << "|   0. Nao                               |" << endl;
                     cout << "|                                        |" << endl;
                     cout << "==========================================" << endl;
                     cout << "Selecione uma opcao:";
                     cin >> option1;
 
-                    if (option1 == 1) {Beep(600, 150); cout << RESET; game();}
+                    if (option1 == 1) {Beep(600, 150); game();}
+                    if (option1 == 2) {Beep(600, 150); game(); pcGame = true;}
                     if (option1 == 0) {Beep(600, 150); menu();}
                         
                 } while (true);

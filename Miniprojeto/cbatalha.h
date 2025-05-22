@@ -22,6 +22,7 @@ class CBatalha{
 		char gameTab1[10][10][10];	//Jogadas do jogador 1
 		char gameTab2[10][10][10];	//Jogadas do jogador 2
 
+		bool pcGame = false;
 		int plays = 0; //Numero de jogadas
         bool needSpace = false; //Configuração para ter 1 espaço entre as naves
         int randomShip = 2;
@@ -64,11 +65,12 @@ class CBatalha{
 		void placeShip(int, int, int, char, int, int, char);
 		void writeInTab(int, int);
 		void writeInTab2(int, int);
+		void pcGameplay();
 		bool verifyWin();
 		void shipSelection();
 		void game();
 		void menu();	
-        
+	
 };
 
 #endif
