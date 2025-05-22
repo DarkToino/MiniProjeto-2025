@@ -5,10 +5,10 @@
 using namespace std;
 
 int main() {
-    CBatalha START;
+    CBatalha A;
 
-    START.menu();
-
+    A.menu();
+    
     return 0;
 }
 
